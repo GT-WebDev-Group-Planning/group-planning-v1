@@ -7,7 +7,7 @@ import Calendar from './pages/Calendar';
 import Evite from './pages/Evite';
 import Group from './pages/Group';
 import JoinGroup from './pages/JoinGroup';
-import Login from './pages/Login';
+import Login from './pages/LogIn';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

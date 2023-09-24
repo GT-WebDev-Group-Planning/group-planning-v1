@@ -8,27 +8,34 @@ import './joingroup.css';
   On the button press, only display the respective follow-up inputs/buttons
 */
 
+const CODE_LENGTH = 6;
+const NAME_LENGTH = 15;
+
 function JoinGroup() {
   // replace this with clickedJoin and clickedCreate
   // since we want to also show the rest of the inputs
-  const [showCreate, setShowCreate] = useState(true);
-  const [showJoin, setShowJoin] = useState(true);
+  const [clickedCreate, setClickedCreate] = useState(false);
+  const [clickedJoin, setClickedJoin] = useState(false);
   return (
     <div className="JoinGroup">
       <h1>Join Group Page</h1>
       <div className="main">
-        {showCreate && <CreateButton setShowJoin={setShowJoin} />}
-        {showJoin && <JoinButton setShowCreate={setShowCreate} />}
+        <div className="buttons-row">
+          {!clickedJoin && !clickedCreate && <CreateButton setClickedCreate={setClickedCreate} />}
+          {!clickedCreate && !clickedJoin && <JoinButton setClickedJoin={setClickedJoin} />}
+        </div>
+        {clickedJoin && <JoinField />}
+        {clickedCreate && <CreateField />}
       </div>
     </div>
   );
 }
 
-function CreateButton({setShowJoin}) {
+function CreateButton({setClickedCreate}) {
   return (
     <button onClick={
       () => {
-        setShowJoin(false);
+        setClickedCreate(true);
       }
     }>
       Create Group
@@ -36,15 +43,55 @@ function CreateButton({setShowJoin}) {
   );
 }
 
-function JoinButton({setShowCreate}) {
+function JoinButton({setClickedJoin}) {
   return (
     <button onClick={
       () => {
-        setShowCreate(false);
+        setClickedJoin(true);
       }
     }>
       Join Group
     </button>
+  );
+}
+
+// contains input field for group name, etc.
+function CreateField() {
+  return (
+    <div>
+      <h2>Create Group</h2>
+      <div className="inputs-col">
+        <div className="input-row">
+          <p>Group Name: </p>
+          <input type="text" maxLength={NAME_LENGTH}/>
+        </div>
+        <div className="input-row">
+          <p>Group Code: </p>
+          <input maxLength={CODE_LENGTH}/>
+        </div>
+        <div className="input-row">
+          <p>Share: </p>
+          <p>Either buttons or something else</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// contains input field for join code and join button to join the group
+function JoinField() {
+  // this could be replaced with a regular variable
+  const [code, setCode] = useState("");
+  return (
+    <div>
+      <h2>Join Group</h2>
+      <p>Enter Group Code: </p>
+      <input type="text" value={code} onChange={e => setCode(e.target.value)} placeholder="e.g. 123456" maxLength={CODE_LENGTH}/>
+      <p>{code}</p>
+      <button>
+        Join Group
+      </button>
+    </div>
   );
 }
 

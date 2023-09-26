@@ -20,20 +20,31 @@ function JoinGroup() {
     <div className="JoinGroup">
       <h1>Join Group Page</h1>
       <div className="main">
-        <div className="buttons-row">
-          {!clickedJoin && !clickedCreate && <CreateButton setClickedCreate={setClickedCreate} />}
-          {!clickedCreate && !clickedJoin && <JoinButton setClickedJoin={setClickedJoin} />}
-        </div>
-        {clickedJoin && <JoinField />}
-        {clickedCreate && <CreateField />}
+        {
+          !clickedJoin && 
+            <div className="create">
+            {!clickedJoin && !clickedCreate && <CreateButton setClickedCreate={setClickedCreate} />}
+            {clickedCreate && <CreateField />}
+          </div>
+        }
+        {
+          !clickedCreate &&
+          <div className="join">
+            {!clickedCreate && !clickedJoin && <JoinButton setClickedJoin={setClickedJoin} />}
+            {clickedJoin && <JoinField />}
+          </div>
+        }
+        
       </div>
     </div>
   );
 }
 
+// could merge these two functions, since the only difference is the setClicked
+// and background color
 function CreateButton({setClickedCreate}) {
   return (
-    <button onClick={
+    <button className="button mt-8" onClick={
       () => {
         setClickedCreate(true);
       }
@@ -45,7 +56,7 @@ function CreateButton({setClickedCreate}) {
 
 function JoinButton({setClickedJoin}) {
   return (
-    <button onClick={
+    <button className="button mt-8" onClick={
       () => {
         setClickedJoin(true);
       }
@@ -58,21 +69,24 @@ function JoinButton({setClickedJoin}) {
 // contains input field for group name, etc.
 function CreateField() {
   return (
-    <div>
+    <div className="field">
       <h2>Create Group</h2>
       <div className="inputs-col">
         <div className="input-row">
-          <p>Group Name: </p>
+          <p className="input-text">Group Name: </p>
           <input type="text" maxLength={NAME_LENGTH}/>
         </div>
         <div className="input-row">
-          <p>Group Code: </p>
+          <p className="input-text">Group Code: </p>
           <input maxLength={CODE_LENGTH}/>
         </div>
         <div className="input-row">
-          <p>Share: </p>
+          <p className="input-text">Share: </p>
           <p>Either buttons or something else</p>
         </div>
+        <button className="button self-center">
+          Create Group
+        </button>
       </div>
     </div>
   );
@@ -83,12 +97,12 @@ function JoinField() {
   // this could be replaced with a regular variable
   const [code, setCode] = useState("");
   return (
-    <div>
+    <div className="field">
       <h2>Join Group</h2>
-      <p>Enter Group Code: </p>
+      <p className="input-text">Enter Group Code: </p>
       <input type="text" value={code} onChange={e => setCode(e.target.value)} placeholder="e.g. 123456" maxLength={CODE_LENGTH}/>
       <p>{code}</p>
-      <button>
+      <button className="button">
         Join Group
       </button>
     </div>

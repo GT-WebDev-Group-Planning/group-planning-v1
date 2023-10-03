@@ -6,6 +6,8 @@ import './joingroup.css';
   Then, show the necessary inputs that the user needs to press
 
   On the button press, only display the respective follow-up inputs/buttons
+
+  If incorrect information is entered, either disable the create/join buttons or make it show a popup instead of proceeding
 */
 
 const CODE_LENGTH = 6;

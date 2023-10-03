@@ -1,7 +1,7 @@
 function Evite() {
     return (
       <div className="Evite">
-        <h1 color="#f4a1e9" style = "font: Lucida Handwriting">Evite Page</h1>
+        <h1 color="#f4a1e9">Evite Page</h1>
         <h2>Attendees</h2>
         <h2>Invitation</h2>
         <canvas id = "invitation" width = "150" height = "100"></canvas>

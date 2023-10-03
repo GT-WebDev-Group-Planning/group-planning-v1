@@ -9,6 +9,7 @@ function App() {
         <button><Link to="/group">Group</Link></button>
         <button><Link to="/joingroup">Join Group</Link></button>
         <button><Link to="/login">Login</Link></button>
+        <button><Link to="/CalendarSelect">Calendar Select</Link></button>
       </div>
     );
   }

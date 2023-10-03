@@ -8,18 +8,20 @@ import Evite from './pages/Evite';
 import Group from './pages/Group';
 import JoinGroup from './pages/JoinGroup';
 import Login from './pages/LogIn';
+import CalendarSelect from './pages/CalendarSelect/CalendarSelect';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
-    <Routes>
+      <Routes>
         <Route path="" element={<App />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/evite" element={<Evite />} />
         <Route path="/group" element={<Group />} />
         <Route path="/joingroup" element={<JoinGroup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/calendarselect" element={<CalendarSelect />} />
       </Routes>
     </Router>
   </React.StrictMode>

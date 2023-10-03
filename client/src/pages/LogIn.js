@@ -5,15 +5,18 @@ function Login() {
     <div className="LogIn">
       <h1>Log In Page</h1>
         <p style={{textAlign: "center"}}>
-        Username: 
-        </p>
+        Username:
+        
           <input type="text" placeholder="Username"/>
+          </p>
         <p style={{textAlign: "center"}}>
         Password:
-        </p>
+        
 	        <input type="text" placeholder="Password"/>
-
+          </p>
+          <p style={{textAlign: "center"}}>
           <button variant="text">Login</button>
+          </p>
     </div>
 
     

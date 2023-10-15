@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './calendar.css';
 
 const Calendar = () => {
   const months = [
@@ -22,20 +23,6 @@ const Calendar = () => {
     position: 'absolute',
   };
 
-  const buttonStyle = {
-    fontSize: '24px',
-    padding: '5px 10px',
-    margin: '10px',
-    cursor: 'pointer',
-    backgroundColor: 'lightgray', // Add your desired background color
-  };
-
-  const monthDisplay = {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    margin: '10px',
-  }
-
   const monthContainer = {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -43,28 +30,15 @@ const Calendar = () => {
     backgroundColor: 'lightblue',
   }
 
-  const buttonContainer = {
-    display: 'flex',
-    flexGrow: '0',
-  }
-
   const leftSide = {
     display: 'flex',
     flexDirection: 'column',
-    width: '250px'
+    maxWidth: '250px'
   }
 
   const memberList = {
-    height: '200px',
+    height: '100px',
     overflowY: 'scroll',
-  }
-
-  const member0 = {
-    backgroundColor: 'lightblue',
-  }
-
-  const member1 = {
-    backgroundColor: 'lightgray',
   }
 
   return (
@@ -81,14 +55,19 @@ const Calendar = () => {
         {/*Month Section*/}
         <h2 style={{ backgroundColor: 'DodgerBlue' }}>Month: </h2>
         <div className="month-container" style={monthContainer}>
-          <div id="month-display" style={monthDisplay}>{months[currentMonthIndex]}</div>
-          <button id="prev-month" onClick={prevMonth} style={buttonStyle}>&lt;</button>
-          <button id="next-month" onClick={nextMonth} style={buttonStyle}>&gt;</button>
+          <div id="month-display">{months[currentMonthIndex]}</div>
+          <button id="prev-month" onClick={prevMonth}>&lt;</button>
+          <button id="next-month" onClick={nextMonth}>&gt;</button>
         </div>
-        <div style={monthDisplay}>Members:</div>
+        <div id='calendarPH'></div>
+        <h2>Members:</h2>
         <dl style={memberList}>
-          <dt style={member0}>Coffee</dt>
-          <dt style={member1}>Milk</dt>
+          <dt class='member0'>Get member based on group</dt>
+          <dt class='member1'>Get member based on group</dt>
+          <dt class='member0'>Get member based on group</dt>
+          <dt class='member1'>Get member based on group</dt>
+          <dt class='member0'>Get member based on group</dt>
+          <dt class='member1'>Get member based on group</dt>
         </dl>
       </div>
     </div>

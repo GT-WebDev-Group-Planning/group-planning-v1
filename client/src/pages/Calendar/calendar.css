@@ -1,0 +1,72 @@
+/* initialPos */
+.display-flex {
+    display: flex;
+  }
+  
+  .position-absolute {
+    position: absolute;
+  }
+  
+  /* buttonStyle */
+  button {
+    font-size: 24px;
+    padding: 5px 10px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: lightgray; /* Add your desired background color */
+  }
+
+  dt {
+    height: 30px;
+  }
+  
+  /* monthDisplay */
+  #month-display{
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px;
+    width: 115px;
+  }
+
+  #calendarPH {
+    height: 200px;
+    width: 200px;
+    background-color: aquamarine;
+  }
+  
+  /* monthContainer */
+  .month-container {
+    display: flex;
+    justify-content: flex-end;
+    vertical-align: middle;
+    background-color: lightblue;
+  }
+  
+  /* buttonContainer */
+  .button-container {
+    display: flex;
+    flex-grow: 0;
+  }
+  
+  /* leftSide */
+  .left-side {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+  }
+  
+  /* memberList */
+  .member-list {
+    height: 200px;
+    overflow-y: scroll;
+  }
+  
+  /* member0 */
+  .member0 {
+    background-color: lightblue;
+  }
+  
+  /* member1 */
+  .member1 {
+    background-color: lightgray;
+  }

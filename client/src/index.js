@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Calendar from './pages/Calendar';
+import Calendar from './pages/Calendar/Calendar';
 import Evite from './pages/Evite';
 import Group from './pages/Group';
 import JoinGroup from './pages/JoinGroup';

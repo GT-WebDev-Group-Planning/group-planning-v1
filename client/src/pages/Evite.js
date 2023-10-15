@@ -1,17 +1,18 @@
+import invitation from './invitation_picture.png';
+import friends from './friends.png'
+import { Link } from "react-router-dom";
 function Evite() {
     return (
       <div className="Evite">
-        <h1 color="#f4a1e9">Evite Page</h1>
-        <h2>Attendees</h2>
-        <h2 align="left">Invitation</h2>
-        <canvas id = "invitation" width = "150" height = "100"></canvas>
-        <button color = "#d6300d">Color</button>
-        <button type = "button" color = "#2a85ec">Images</button>
-        <button type = "button" color = "#000000">Text</button>
+        <center><h1 color="#f4a1e9">Invitation</h1>
+        <br /><br /><br />
+        <input type="text"></input>
+        <button type = "submit" color="Red">Send Invitation</button>
+        <h2>Attendees</h2></center>
+        <img src={invitation} alt="Invitation" width="300" height="250" />
+        <img src={friends} alt="Mike and Sully" width="260" height="330" align="right" />
         <br />
-        <button type = "submit" color="#08f525">Send Invitation</button>
-        <br />
-        <rect width="150" height="100" />
+        <center><button type="button" align="Bottom"><Link to="/calendar">Back</Link></button></center>
       </div>
     );
   }

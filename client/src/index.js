@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Calendar from './pages/Calendar';
 import Evite from './pages/Evite';
 import Group from './pages/Group';
-import JoinGroup from './pages/JoinGroup';
+import JoinGroup from './pages/join_group/JoinGroup';
 import Login from './pages/LogIn';
 import Test from './pages/Test';
 

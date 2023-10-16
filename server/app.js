@@ -1,7 +1,12 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
+const path = require('path');
+
+app.use(cors());
+app.use(express.json());
 
 const { google } = require('googleapis');
 const oauth2Client = new google.auth.OAuth2(
@@ -21,6 +26,10 @@ const connectDB = require('./db/connect');
 app.get('/', (req, res) => {
   res.send('<h1>Testing</h1>');
 })
+
+app.get('/message', (req, res) => {
+    res.json({ message: "Hello from server!" });
+});
 
 app.get('/google', (req, res) => {
   const url = oauth2Client.generateAuthUrl({

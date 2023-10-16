@@ -8,6 +8,7 @@ import Evite from './pages/Evite';
 import Group from './pages/Group';
 import JoinGroup from './pages/JoinGroup';
 import Login from './pages/LogIn';
+import Test from './pages/Test';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,6 +21,7 @@ root.render(
         <Route path="/group" element={<Group />} />
         <Route path="/joingroup" element={<JoinGroup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
     </Router>
   </React.StrictMode>

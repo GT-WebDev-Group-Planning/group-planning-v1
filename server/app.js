@@ -21,11 +21,12 @@ const scopes = [
 
 //connectDB
 const connectDB = require('./db/connect');
+const { Collection } = require('mongodb');
 
 
 app.get('/', (req, res) => {
   res.send('<h1>Testing</h1>');
-})
+});
 
 app.get('/message', (req, res) => {
     res.json({ message: "Hello from server!" });
@@ -35,14 +36,14 @@ app.get('/google', (req, res) => {
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope: scopes
-  })
+  });
 
   res.redirect(url);
 });
 
 app.get('/google/redirect', (req, res) => {
   res.send("redirect works!");
-})
+});
 
 const port = process.env.PORT || 5000;
 

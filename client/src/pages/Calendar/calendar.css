@@ -41,6 +41,15 @@
     vertical-align: middle;
     background-color: lightblue;
   }
+
+  .gcal {
+    border: 0;
+    width: 800;
+    height: 600;
+    frameborder: 0;
+    scrolling: no;
+    
+  }
   
   /* buttonContainer */
   .button-container {

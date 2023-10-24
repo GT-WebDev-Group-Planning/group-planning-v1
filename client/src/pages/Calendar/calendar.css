@@ -1,0 +1,111 @@
+  * {
+    font-family:'Montserrat';
+  }
+
+  /* initialPos */
+  .Calendar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    background-color: #fffdf7;
+  }
+
+  /* buttonStyle */
+  button {
+    font-size: 24px;
+    margin-top: 250px;
+    width: 100%;
+    cursor: pointer;
+    background-color: #fdd85d; /* Add your desired background color */
+  }
+
+  dt {
+    height: 30px;
+  }
+
+  select {
+    /* Set the desired width */
+    width: 100%;
+    padding: 10px; /* Add padding for better appearance */
+    font-size: 16px; /* Adjust font size */
+    font-family:'Montserrat';font-size: 22px;;
+    border: 1px solid #ccc; /* Add a border */
+    background-color: #fff; /* Set background color */
+  }
+  
+  /* monthDisplay */
+  #month-display{
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px;
+  }
+  
+  /* monthContainer */
+  .month-container {
+    display: flex;
+    justify-content: flex-end;
+    vertical-align: middle;
+    background-color: lightblue;
+  }
+
+  .gcal {
+    border: 0;
+    width: 800;
+    height: 600;
+  }
+  
+  /* leftSide */
+  .LeftSide {
+    width: 400px;
+  }
+
+  .circles {
+    display: flex;
+    height: 50px;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .circle1 {
+    width: 30px;
+    height: 30px;
+    background-color: #003566;
+    border-radius: 50%; /* Makes it a circle */
+  }
+
+  .circle2 {
+    width: 30px;
+    height: 30px;
+    background-color: #fdd85d;
+    border-radius: 50%; /* Makes it a circle */
+  }
+
+  .circle3 {
+    width: 30px;
+    height: 30px;
+    background-color: #99d6ea;
+    border-radius: 50%; /* Makes it a circle */
+  }
+
+  .NavBar {
+    width: 100%;
+    height: 100px;
+    background-color: #6798c0;
+  }
+  
+  /* memberList */
+  .member-list {
+    height: 200px;
+    overflow-y: scroll;
+  }
+  
+  /* member0 */
+  .member0 {
+    background-color: lightblue;
+  }
+  
+  /* member1 */
+  .member1 {
+    background-color: lightgray;
+  }

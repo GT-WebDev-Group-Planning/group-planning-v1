@@ -1,23 +1,37 @@
-/* initialPos */
-.display-flex {
+  * {
+    font-family:'Montserrat';
+  }
+
+  /* initialPos */
+  .Calendar {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    background-color: #fffdf7;
   }
-  
-  .position-absolute {
-    position: absolute;
-  }
-  
+
   /* buttonStyle */
   button {
     font-size: 24px;
-    padding: 5px 10px;
-    margin: 10px;
+    margin-top: 250px;
+    width: 100%;
     cursor: pointer;
-    background-color: lightgray; /* Add your desired background color */
+    background-color: #fdd85d; /* Add your desired background color */
   }
 
   dt {
     height: 30px;
+  }
+
+  select {
+    /* Set the desired width */
+    width: 100%;
+    padding: 10px; /* Add padding for better appearance */
+    font-size: 16px; /* Adjust font size */
+    font-family:'Montserrat';font-size: 22px;;
+    border: 1px solid #ccc; /* Add a border */
+    background-color: #fff; /* Set background color */
   }
   
   /* monthDisplay */
@@ -25,13 +39,6 @@
     font-size: 24px;
     font-weight: bold;
     margin: 10px;
-    width: 115px;
-  }
-
-  #calendarPH {
-    height: 200px;
-    width: 200px;
-    background-color: aquamarine;
   }
   
   /* monthContainer */
@@ -46,22 +53,45 @@
     border: 0;
     width: 800;
     height: 600;
-    frameborder: 0;
-    scrolling: no;
-    
-  }
-  
-  /* buttonContainer */
-  .button-container {
-    display: flex;
-    flex-grow: 0;
   }
   
   /* leftSide */
-  .left-side {
+  .LeftSide {
+    width: 400px;
+  }
+
+  .circles {
     display: flex;
-    flex-direction: column;
-    width: 250px;
+    height: 50px;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .circle1 {
+    width: 30px;
+    height: 30px;
+    background-color: #003566;
+    border-radius: 50%; /* Makes it a circle */
+  }
+
+  .circle2 {
+    width: 30px;
+    height: 30px;
+    background-color: #fdd85d;
+    border-radius: 50%; /* Makes it a circle */
+  }
+
+  .circle3 {
+    width: 30px;
+    height: 30px;
+    background-color: #99d6ea;
+    border-radius: 50%; /* Makes it a circle */
+  }
+
+  .NavBar {
+    width: 100%;
+    height: 100px;
+    background-color: #6798c0;
   }
   
   /* memberList */

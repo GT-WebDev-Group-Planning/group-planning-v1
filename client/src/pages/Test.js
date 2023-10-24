@@ -8,12 +8,13 @@ function Test() {
       .then((res) => res.json())
       .then((data) => setMessage(data.message));
   }, []);
-
-  return (
-    <div>
-      <h1>{message}</h1>
-    </div>
-  );
+  if (message) {
+    return (
+      <div>
+        <h1>{message}</h1>
+      </div>
+    );
+  }
 }
 
 export default Test

@@ -7,7 +7,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const fs = require('fs').promises;
+const path = require('path');
+const process = require('process');
+const {authenticate} = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
+
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,

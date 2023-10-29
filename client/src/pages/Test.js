@@ -1,20 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 function Test() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:5000/message")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
-  }, []);
-  if (message) {
-    return (
-      <div>
-        <h1>{message}</h1>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <a href="http://localhost:5000/google">Log into Google</a>
+    </div>
+  );
 }
 
 export default Test

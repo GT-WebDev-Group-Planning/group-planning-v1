@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const path = require('path');
 
 app.use(cors());
 app.use(express.json());
@@ -39,10 +38,6 @@ app.get('/google', (req, res) => {
 
   res.redirect(url);
 });
-
-app.get('/google/redirect', (req, res) => {
-  res.send("redirect works!");
-})
 
 const port = process.env.PORT || 5000;
 

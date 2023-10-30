@@ -31,11 +31,12 @@ const scopes = [
 
 //connectDB
 const connectDB = require('./db/connect');
+const { Collection } = require('mongodb');
 
 
 app.get('/', (req, res) => {
   res.send('<h1>Testing</h1>');
-})
+});
 
 app.get('/message', (req, res) => {
     res.json({ message: "Hello from server!" });
@@ -45,11 +46,12 @@ app.get('/google', (req, res) => {
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope: scopes
-  })
+  });
 
   res.redirect(url);
 });
 
+<<<<<<< HEAD:client/src/server/app.js
 app.get('/redirect', async (req, res) => {
   try {
 
@@ -72,6 +74,10 @@ app.get('/redirect', async (req, res) => {
     console.log(error)
     return res.status(500).send("Unable to save user")
   }
+=======
+app.get('/google/redirect', (req, res) => {
+  res.send("redirect works!");
+>>>>>>> main:server/app.js
 });
 
 const port = process.env.PORT || 5000;

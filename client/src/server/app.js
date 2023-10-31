@@ -98,7 +98,7 @@ const connectDB = require('./db/connect');
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 async function listEvents(auth) {
-  const calendar = google.calendar({version: 'v3', auth});
+  const calendar = google.calendar({ version: 'v3', auth });
   const res = await calendar.events.list({
     calendarId: 'primary',
     timeMin: new Date().toISOString(),
@@ -109,13 +109,14 @@ async function listEvents(auth) {
   const events = res.data.items;
   if (!events || events.length === 0) {
     console.log('No upcoming events found.');
-    return;
+    return [];
   }
   console.log('Upcoming 10 events:');
   events.map((event, i) => {
     const start = event.start.dateTime || event.start.date;
     console.log(`${start} - ${event.summary}`);
   });
+  return events; // Return the events array
 }
 
 
@@ -138,11 +139,8 @@ app.get('/google', (req, res) => {
 
 app.get('/redirect', async (req, res) => {
   try {
-
     const code = req.query.code;
-
     const { tokens } = await oauth2Client.getToken(code);
-
     oauth2Client.setCredentials(tokens);
 
     // Use the access token to fetch user information
@@ -153,10 +151,26 @@ app.get('/redirect', async (req, res) => {
 
     const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokens.access_token}`);
 
-    return await createUser(data, res)
+    if (await createUser(data, res).statusCode === 400) {
+      return await createUser(data, res);
+    }
+
+    const exists = await createUser(data, res);
+
+    if (!exists) {
+      res.redirect('http://localhost:3000/CalendarSelect');
+    } else if (exists) {
+      const events = await listEvents(oauth2Client);
+      const eventsJSON = JSON.stringify(events);
+      const eventsParam = encodeURIComponent(eventsJSON);
+      res.redirect(`http://localhost:3000/group?events=${eventsParam}`);
+    } else {
+      // Handle other cases or errors
+      res.status(500).send("Unable to save user");
+    }
   } catch (error) {
-    console.log(error)
-    return res.status(500).send("Unable to save user")
+    console.log(error);
+    res.status(500).send("Unable to save user");
   }
 });
 

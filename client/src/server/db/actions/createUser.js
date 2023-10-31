@@ -8,7 +8,9 @@ async function createUser(userData, res) {
     if (User.exists({ email : e })) {
       return true;
     }
-    const user = new User({ e, n });
+    const groups = [];
+    const events = [];
+    const user = new User({ e, n, events, groups });
     await user.save();
     return false;
   } catch (e) {

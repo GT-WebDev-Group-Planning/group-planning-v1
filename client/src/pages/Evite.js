@@ -8,7 +8,7 @@ function Evite() {
         <br /><br /><br />
         <input type="text"></input>
         <button type = "submit" color="Red">Send Invitation</button>
-        <h2>Attendees</h2></center>
+        <h2>Invitees</h2></center>
         <img src={invitation} alt="Invitation" width="300" height="250" />
         <img src={friends} alt="Mike and Sully" width="260" height="330" align="right" />
         <br />

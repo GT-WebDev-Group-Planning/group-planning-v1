@@ -20,6 +20,14 @@
     background-color: #fdd85d; /* Add your desired background color */
   }
 
+  button:hover {
+    background-color: #e2c153; /* Darker background color */
+  }
+
+  button:active {
+    transform: translate(1px, 2px); /* Move the button down slightly when clicked */
+  }
+
   dt {
     height: 30px;
   }

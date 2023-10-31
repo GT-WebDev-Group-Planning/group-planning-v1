@@ -19,7 +19,7 @@ root.render(
         <Route path="" element={<App />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/evite" element={<Evite />} />
-        <Route path="/calendarselect" element={<CalendarSelect />} />
+        <Route path="/group" element={<Group />} />
         <Route path="/joingroup" element={<JoinGroup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/calendarselect" element={<CalendarSelect />} />

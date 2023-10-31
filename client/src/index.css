@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -10,4 +11,120 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.options {
+  
+  background-color: #D9D9D9;
+  
+  top:5%;
+  left:0px;
+  height: 90%;
+  width: 90%;
+  font-size: 30px;
+  border-radius: 40px;
+  text-align: center;
+  margin: 0 auto;
+  position: relative;
+
+}
+
+.calLabels {
+  height: 80%;
+  width: 100%;
+  /*background-color: pink;*/
+  overflow-y: auto;
+  line-height: 2;
+}
+
+.selAndHelp {
+  height: 10%;
+  width: 100%;
+  /*background-color: aquamarine;*/
+}
+
+.SelectAndHelp {
+  height:100%;
+  width: 100%;
+}
+
+.confirmBtn {
+  height: 10%;
+  width: 100%;
+  /*background-color: aquamarine;*/
+}
+
+.selCalendar {
+  height: 100%;
+  width: 80%;
+  float: left;
+  /*background-color: yellow;*/
+  padding:0;
+}
+
+.btn {
+  height: 100%;
+  width: 20%;
+  float: right;
+  /*background-color: orange;*/
+}
+
+.CSbutton {
+  width: 60%;
+  height: 60%;
+  background-color: #9FB99F;
+}
+
+.CalendarSelect {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.navBar {
+  width: 100%;
+  height: 10vh;
+  
+}
+
+.mainSection {
+  width: 100%;
+  height: 90vh;
+}
+
+.Container {
+  width: 100%;
+  height: 100%;
+}
+
+
+.leftPane {
+  width: 33.33%;
+  height: 100%;
+  float: left;
+  border-collapse: collapse;
+  background-image: url('https://globalgrind.com/wp-content/uploads/sites/16/2023/07/1688672849497.jpg?strip=all&quality=80');
+}
+
+.midPane {
+  width: 33.34%;
+  height: 100%;
+  float: left;
+  border-collapse: collapse;
+  position: relative;
+}
+
+.rightPane {
+  width: 33.33%;
+  height: 100%;
+  float: left;
+  border-collapse: collapse;
+  /*background-color: blue;*/
+  background-image: url('https://globalgrind.com/wp-content/uploads/sites/16/2023/07/1688672849497.jpg?strip=all&quality=80');
 }

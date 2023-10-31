@@ -5,7 +5,7 @@ import App from './App';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Calendar from './pages/Calendar';
 import Evite from './pages/Evite';
-import Group from './pages/Group';
+import CalendarSelect from './pages/CalendarSelect';
 import JoinGroup from './pages/JoinGroup';
 import Login from './pages/LogIn';
 
@@ -17,7 +17,7 @@ root.render(
         <Route path="" element={<App />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/evite" element={<Evite />} />
-        <Route path="/group" element={<Group />} />
+        <Route path="/calendarselect" element={<CalendarSelect />} />
         <Route path="/joingroup" element={<JoinGroup />} />
         <Route path="/login" element={<Login />} />
       </Routes>

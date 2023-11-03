@@ -17,5 +17,9 @@ function Evite() {
     );
   }
   
+function sendInvite(setInviteSent) {
+  
+}
+
   export default Evite;
   

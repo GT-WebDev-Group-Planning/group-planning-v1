@@ -36,6 +36,8 @@ const scopes = [
 
 //connectDB
 const connectDB = require('./db/connect');
+const { oauth2 } = require("googleapis/build/src/apis/oauth2");
+const { Console } = require("console");
 
 // const TOKEN_PATH = path.join(process.cwd(), 'token.json');
 // const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
@@ -174,6 +176,8 @@ app.get('/redirect', async (req, res) => {
   }
 });
 
+
+
 app.get('/events', (req, res) => {
   listEvents(oauth2Client)
   res.send('<h1>Events</h1>');
@@ -191,5 +195,31 @@ const start = async () => {
     console.log(error);
   }
 };
+
+// creates calendar for user(s)
+app.post('/createcalendar', (req, res) => {
+  /*
+    request body format: 
+  */
+});
+
+// creates and sends an invitation to user(s)
+// currently adds an invitation to the database and "gives" it to any user specified
+app.get('/sendinvite', async (req, res) => {
+  // gets a testing public calendar, just so accepted invites don't modify existing calendars
+  const testCalendar = await getTestCalendar();
+  console.log(testCalendar);
+});
+
+// accepts an invitation / adds event for a user
+app.post('/user/:userId/events/:eventId', (req, res) => {
+
+});
+
+async function getTestCalendar() {
+  return google.calendar({version: 'v3', auth: oauth2Client}).calendars.get({
+    calendarId: 'a3cbb914f3b106872b6593930dad01a7cd54ba7574e16b4514590481905b144f@group.calendar.google.com'
+  });
+}
 
 start();

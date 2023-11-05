@@ -207,19 +207,60 @@ app.post('/createcalendar', (req, res) => {
 // currently adds an invitation to the database and "gives" it to any user specified
 app.get('/sendinvite', async (req, res) => {
   // gets a testing public calendar, just so accepted invites don't modify existing calendars
-  const testCalendar = await getTestCalendar();
-  console.log(testCalendar);
+  // const calendar = google.calendar({version: 'v3', auth: oauth2Client});
+  const calendarId = 'a3cbb914f3b106872b6593930dad01a7cd54ba7574e16b4514590481905b144f@group.calendar.google.com';
+
+  // YYYY-MM-DDTHH:MM
+  const curDate = new Date().toISOString().substring(0, 16);
+  const hour = curDate.slice(-5, -3);
+  const startDate = curDate.concat(":00Z");
+  const endDate = curDate.slice(0, -5).concat(((parseInt(hour) + 1) % 24).toString()).concat(":00:00Z");
+  console.log(startDate);
+  console.log(endDate);
+  
+  // create sample event
+  const event = {
+    "kind": "calender#event",
+    "id": "123456",
+    "description": "test sample event",
+    "start": {
+      'dateTime': startDate,
+      'timeZone': 'America/New_York'
+    },
+    "end": {
+      'dateTime': endDate,
+      'timeZone': 'America/New_York'
+    }
+  };
+
+  // insert test calendar if not already there
+  calendar.calendarList.insert({
+    resource: { id: calendarId },
+    auth: oauth2Client,
+  }).then((cal) => {
+    calendar.events.insert({
+      calendarId: calendarId,
+      resource: event,
+      auth: oauth2Client,
+    }, (err, event) => {
+      if (err) {
+        console.log("Error adding event: %s", err);
+      } else {
+        console.log("Event: %s", event);
+      }
+    });
+  });
+  res.send("Sending invite");
 });
 
-// accepts an invitation / adds event for a user
+// accepts/rejects an invitation / adds event for a user
 app.post('/user/:userId/events/:eventId', (req, res) => {
 
 });
 
-async function getTestCalendar() {
-  return google.calendar({version: 'v3', auth: oauth2Client}).calendars.get({
-    calendarId: 'a3cbb914f3b106872b6593930dad01a7cd54ba7574e16b4514590481905b144f@group.calendar.google.com'
-  });
-}
+// returns all evites of a user
+app.get('/user/:userId/evites', (req, res) => {
+
+});
 
 start();

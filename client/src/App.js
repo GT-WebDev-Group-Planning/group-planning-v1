@@ -5,7 +5,7 @@ function App() {
       <div className="App">
         <h1>Group Planning</h1>
         <button><Link to="/calendar">Calendar</Link></button>
-        <button><Link to="/evite">Evite</Link></button>
+        <button><Link to="/evite">Create Event</Link></button>
         <button><Link to="/group">Group</Link></button>
         <button><Link to="/joingroup">Join Group</Link></button>
         <button><Link to="/login">Login</Link></button>

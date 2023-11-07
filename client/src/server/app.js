@@ -1,4 +1,5 @@
 const createUser = require("./db/actions/createUser");
+const createInvitation = require('./db/actions/createInvitation');
 
 const axios = require("axios")
 
@@ -205,6 +206,11 @@ app.post('/createcalendar', (req, res) => {
 
 // creates and sends an invitation to user(s)
 // currently adds an invitation to the database and "gives" it to any user specified
+// THINGS TO CONSIDER: how to give the intended user the event on accepting the invitation
+/* 
+  1. Add on primary - not shared, only adds single event. We'd have to store all relevant information of the event in the schema
+  2. Add on shared calendar - shared, so if event deleted by organizer, then gone for everyone. clutter calendarlist. Don't need to add all details to schema. Just need to give calendarId.
+*/
 app.get('/sendinvite', async (req, res) => {
   // gets a testing public calendar, just so accepted invites don't modify existing calendars
   // const calendar = google.calendar({version: 'v3', auth: oauth2Client});
@@ -218,10 +224,11 @@ app.get('/sendinvite', async (req, res) => {
   console.log(startDate);
   console.log(endDate);
   
+  
+
   // create sample event
   const event = {
     "kind": "calender#event",
-    "id": "123456",
     "description": "test sample event",
     "start": {
       'dateTime': startDate,
@@ -242,12 +249,19 @@ app.get('/sendinvite', async (req, res) => {
       calendarId: calendarId,
       resource: event,
       auth: oauth2Client,
-    }, (err, event) => {
+    }).then(async (event, err) => {
       if (err) {
         console.log("Error adding event: %s", err);
       } else {
         console.log("Event: %s", event);
+        console.log(event.data);
       }
+      // create invitation
+      await createInvitation({
+        description: "test invitation",
+        eventId: event.data.id,
+        users_sent_to: [],
+      });
     });
   });
   res.send("Sending invite");

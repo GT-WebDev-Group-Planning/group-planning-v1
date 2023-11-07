@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const InvitationSchema = mongoose.Schema({
   schema_version: Number,
   description: String,
-  event: Number,
+  eventId: String,
   users_sent_to: [Number],
   users_accepted: [Number],
 });

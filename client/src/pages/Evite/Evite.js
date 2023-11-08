@@ -38,10 +38,13 @@ function Evite() {
         <h2>Group</h2>
         <Dropdown></Dropdown>
         <h2>Title</h2>
-        <input type="text"></input>
+        <input class="title" type="text"></input>
         <h2>Description</h2>
-        <input type="text"></input>
-        <p>Date</p><p>Time</p>
+        <input class="description" type="text"></input>
+        <p>Start</p>
+        <input type="datetime-local"></input>
+        <p>End</p>
+        <input type="datetime-local"></input>
         <button type = "submit">Send Invitation</button>
         <h2>Invitees</h2></center>
         <img src={invitation} alt="Invitation" width="300" height="250" />

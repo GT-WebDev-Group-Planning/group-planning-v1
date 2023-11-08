@@ -2,5 +2,14 @@ const mongoose = require('mongoose');
 
 const EventSchema = mongoose.Schema({
   schema_version: Number,
-  _id: String,
+  start: Date,
+  end: Date,
+  recurring: {
+
+  },
+  description: String,
 });
+
+const Event = mongoose.model('Event', EventSchema);
+
+module.exports = Event;

@@ -1,5 +1,6 @@
 const createUser = require("./db/actions/createUser");
 const createInvitation = require('./db/actions/createInvitation');
+const createEvent = require('./db/actions/createEvent');
 
 const axios = require("axios")
 
@@ -207,13 +208,15 @@ app.post('/createcalendar', (req, res) => {
 // creates and sends an invitation to user(s)
 // currently adds an invitation to the database and "gives" it to any user specified
 // THINGS TO CONSIDER: how to give the intended user the event on accepting the invitation
+
 /* 
-  1. Add on primary - not shared, only adds single event. We'd have to store all relevant information of the event in the schema
-  2. Add on shared calendar - shared, so if event deleted by organizer, then gone for everyone. clutter calendarlist. Don't need to add all details to schema. Just need to give calendarId.
+  Add on primary - not shared, only adds single event. We'd have to store all relevant information of the event in the schema
 */
-app.get('/sendinvite', async (req, res) => {
+
+app.post('/sendinvite', async (req, res) => {
   // gets a testing public calendar, just so accepted invites don't modify existing calendars
   // const calendar = google.calendar({version: 'v3', auth: oauth2Client});
+  /*
   const calendarId = 'a3cbb914f3b106872b6593930dad01a7cd54ba7574e16b4514590481905b144f@group.calendar.google.com';
 
   // YYYY-MM-DDTHH:MM
@@ -223,8 +226,8 @@ app.get('/sendinvite', async (req, res) => {
   const endDate = curDate.slice(0, -5).concat(((parseInt(hour) + 1) % 24).toString()).concat(":00:00Z");
   console.log(startDate);
   console.log(endDate);
-  
-  
+  */
+  const body = req.body();
 
   // create sample event
   const event = {
@@ -261,15 +264,16 @@ app.get('/sendinvite', async (req, res) => {
         description: "test invitation",
         eventId: event.data.id,
         users_sent_to: [],
-      });
+      }, res);
     });
   });
-  res.send("Sending invite");
+  res.status(200).send("Invite sent");
 });
 
 // accepts/rejects an invitation / adds event for a user
+// event id is with respect to database id
 app.post('/user/:userId/events/:eventId', (req, res) => {
-
+  
 });
 
 // returns all evites of a user

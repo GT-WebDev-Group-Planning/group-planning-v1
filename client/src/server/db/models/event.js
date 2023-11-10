@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
+// add recurrence data
 const EventSchema = mongoose.Schema({
   schema_version: Number,
   start: Date,
   end: Date,
-  recurring: {
-
-  },
+  timeZone: String,
+  summary: String, // the title
   description: String,
 });
 

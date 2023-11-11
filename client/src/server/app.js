@@ -213,20 +213,23 @@ app.post('/createcalendar', (req, res) => {
   Add on primary - not shared, only adds single event. We'd have to store all relevant information of the event in the schema
 */
 
-app.post('/sendinvite', async (req, res) => {
+// temporary .all to listen to all types of http requests, change later to post
+app.all('/sendinvite', async (req, res) => {
   // gets a testing public calendar, just so accepted invites don't modify existing calendars
   // const calendar = google.calendar({version: 'v3', auth: oauth2Client});
+  
   /*
   const calendarId = 'a3cbb914f3b106872b6593930dad01a7cd54ba7574e16b4514590481905b144f@group.calendar.google.com';
 
   // YYYY-MM-DDTHH:MM
+  console.log(new Date().toISOString());
   const curDate = new Date().toISOString().substring(0, 16);
   const hour = curDate.slice(-5, -3);
   const startDate = curDate.concat(":00Z");
   const endDate = curDate.slice(0, -5).concat(((parseInt(hour) + 1) % 24).toString()).concat(":00:00Z");
   console.log(startDate);
   console.log(endDate);
-  */
+  return;
   const body = req.body();
 
   // create sample event
@@ -242,6 +245,7 @@ app.post('/sendinvite', async (req, res) => {
       'timeZone': 'America/New_York'
     }
   };
+  */
 
   // insert test calendar if not already there
   calendar.calendarList.insert({
@@ -270,10 +274,24 @@ app.post('/sendinvite', async (req, res) => {
   res.status(200).send("Invite sent");
 });
 
-// accepts/rejects an invitation / adds event for a user
-// event id is with respect to database id
-app.post('/user/:userId/events/:eventId', (req, res) => {
+// sends invitation
+app.all('/sendinvitation', async (req, res) => {
+  // check if invitation has all required information
+  const { eventData, invitationData } = req.body;
   
+  console.log(eventData);
+  console.log(invitationData);
+
+  invitationData.eventData = eventData;
+  await createInvitation(invitationData, res);
+
+  res.status(200).send('OK');
+  // res.sendStatus(200);
+});
+
+// accept invitation and add event of invitation
+app.post('acceptinvitation', (req, res) => {
+
 });
 
 // returns all evites of a user

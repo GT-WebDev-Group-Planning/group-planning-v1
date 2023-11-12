@@ -1,6 +1,7 @@
 const createUser = require("./db/actions/createUser");
 const createInvitation = require('./db/actions/createInvitation');
 const createEvent = require('./db/actions/createEvent');
+const getInvitation = require('./db/actions/getInvitation');
 
 const axios = require("axios")
 
@@ -155,11 +156,16 @@ app.get('/redirect', async (req, res) => {
 
     const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokens.access_token}`);
 
+    // console.log(data);
+
+    /*
     if (await createUser(data, res).statusCode === 400) {
       return await createUser(data, res);
     }
+    */
 
     const exists = await createUser(data, res);
+    if (exists.statusCode === 400) return exists;
 
     if (!exists) {
       res.redirect('http://localhost:3000/CalendarSelect');
@@ -275,7 +281,7 @@ app.all('/sendinvite', async (req, res) => {
 });
 
 // sends invitation
-app.all('/sendinvitation', async (req, res) => {
+app.post('/sendinvitation', async (req, res) => {
   // check if invitation has all required information
   const { eventData, invitationData } = req.body;
   
@@ -285,14 +291,36 @@ app.all('/sendinvitation', async (req, res) => {
   invitationData.eventData = eventData;
   await createInvitation(invitationData, res);
 
+  // add invitation to users
+  invitationData.users_sent_to.forEach(user => {
+    
+  });
+
   res.status(200).send('OK');
   // res.sendStatus(200);
 });
 
 // accept invitation and add event of invitation
-app.post('acceptinvitation', (req, res) => {
-
+app.all('/acceptinvitation/:invitationId', async (req, res) => {
+  const invitationId = req.params.invitationId;
+  // get invitation from database
+  const invitation = await getInvitation(invitationId)[0];
+  // check if user email is part of users invited (sent to) just in case
+  // console.log(invitation);
+  // console.log(invitation.event);
+  // update accepted users on invitation
+  // add the event to the user calendar
+  await addEvent(invitation.event);
+  res.send("Hello");
 });
+
+async function addEvent(eventData) {
+  await calendar.events.insert({
+    calendarId: 'primary',
+    resource: eventData,
+    auth: oauth2Client
+  });
+}
 
 // returns all evites of a user
 app.get('/user/:userId/evites', (req, res) => {

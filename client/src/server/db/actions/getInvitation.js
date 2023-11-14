@@ -5,7 +5,7 @@ require('dotenv').config();
 
 async function getInvitation(inviteId) {
     await connectDB(process.env.MONGO_URI);
-    const invitation = await Invitation.find({ _id: new mongoose.Types.ObjectId(inviteId) });
+    const invitation = await Invitation.findOne({ _id: new mongoose.Types.ObjectId(inviteId) });
     return invitation;
 }
 

@@ -307,7 +307,7 @@ app.post('/sendinvitation', async (req, res) => {
 app.all('/acceptinvitation/:invitationId', async (req, res) => {
   const invitationId = req.params.invitationId;
   // get invitation from database
-  const invitation = await getInvitation(invitationId)[0];
+  const invitation = await getInvitation(invitationId);
   if (invitation.users_accepted.includes(user)) return res.status(200).send("User already accepted invitation");
   // check if user email is part of users invited (sent to) just in case
   let invited = false;

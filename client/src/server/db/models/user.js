@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 
 const UserSchema = new mongoose.Schema({
+    schema_version: Number,
     email: String,
     name: String,
     groups: [String],

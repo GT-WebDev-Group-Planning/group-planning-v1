@@ -7,6 +7,13 @@ async function createUser(userData, res) {
   try {
     const { email, name } = userData;
     if (await User.exists({ email: email })) {
+      const user = await User.findOne({ email: email });
+      // updatee user to latest schema if not latest
+      if (user.schema_version === undefined || user.schema_version === null || user.schema_version < 2) {
+        user.schema_version = 2;
+        user.invitations = []
+        await user.save();
+      }
       return true;
     }
     const groups = [];

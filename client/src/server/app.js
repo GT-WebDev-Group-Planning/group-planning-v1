@@ -286,8 +286,8 @@ app.post('/sendinvitation', async (req, res) => {
   // check if invitation has all required information
   const { eventData, invitationData } = req.body;
   
-  console.log(eventData);
-  console.log(invitationData);
+  // console.log(eventData);
+  // console.log(invitationData);
 
   invitationData.eventData = eventData;
   const invitation = await createInvitation(invitationData, res);
@@ -295,7 +295,8 @@ app.post('/sendinvitation', async (req, res) => {
   // add invitation to users
   for (email of invitationData.users_sent_to) {
     const person = await getUser(email);
-    person.invitations.append(invitation._id);
+    person.invitations.push(invitation._id);
+    await person.save();
   }
 
   res.status(200).send('OK');

@@ -1,6 +1,9 @@
 const createUser = require("./db/actions/createUser");
+const updateEvents = require("./db/actions/updateEvents");
 
 const axios = require("axios")
+
+const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
 
@@ -10,6 +13,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 const fs = require('fs').promises;
 const path = require('path');
@@ -36,7 +40,7 @@ const scopes = [
 
 //connectDB
 const connectDB = require('./db/connect');
-const { Collection } = require('mongodb');
+// const { Collection } = require('mongodb');
 
 // const TOKEN_PATH = path.join(process.cwd(), 'token.json');
 // const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
@@ -97,11 +101,12 @@ const { Collection } = require('mongodb');
 /**
  * Lists the next 10 events on the user's primary calendar.
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ * @param {string} id The calendar ID.
  */
-async function listEvents(auth) {
+async function listEvents(auth, id) {
   const calendar = google.calendar({ version: 'v3', auth });
   const res = await calendar.events.list({
-    calendarId: 'primary',
+    calendarId: id,
     timeMin: new Date().toISOString(),
     maxResults: 10,
     singleEvents: true,
@@ -120,6 +125,46 @@ async function listEvents(auth) {
   return events; // Return the events array
 }
 
+app.get('/events', async (req, res) => {
+  try {
+    const events = await listEvents(oauth2Client, req.query.calendar);
+    const eventsJSON = JSON.stringify(events);
+    const eventsParam = encodeURIComponent(eventsJSON);
+    const userEmail = req.cookies.userEmail;
+    const updated = await updateEvents(userEmail, events);
+    if (updated) {
+      res.redirect(`http://localhost:3000/group?events=${eventsParam}`);
+    }
+    else {
+      res.redirect(`http://localhost:3000`);
+    }
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    res.status(500).send('Error fetching events');
+  }
+});
+
+/**
+ * Lists the user's calendars with their IDs and summaries.
+ * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ */
+async function listCalendars(auth) {
+  const calendar = google.calendar({ version: 'v3', auth });
+  const calendarList = await calendar.calendarList.list();
+  const calendars = calendarList.data.items;
+
+  if (!calendars || calendars.length === 0) {
+    console.log('No calendars found.');
+    return [];
+  }
+
+  const calendarData = calendars.map((calendar) => ({
+    id: calendar.id,
+    summary: calendar.summary,
+  }));
+
+  return calendarData; // Return the list of calendars with IDs and summaries
+}
 
 app.get('/', (req, res) => {
   res.send('<h1>Testing</h1>');
@@ -138,7 +183,6 @@ app.get('/google', (req, res) => {
   res.redirect(url);
 });
 
-<<<<<<< HEAD:client/src/server/app.js
 app.get('/redirect', async (req, res) => {
   try {
     const code = req.query.code;
@@ -153,19 +197,15 @@ app.get('/redirect', async (req, res) => {
 
     const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokens.access_token}`);
 
-    if (await createUser(data, res).statusCode === 400) {
-      return await createUser(data, res);
-    }
-
     const exists = await createUser(data, res);
+    if (exists.statusCode === 400) return exists;
 
-    if (!exists) {
-      res.redirect('http://localhost:3000/CalendarSelect');
-    } else if (exists) {
-      const events = await listEvents(oauth2Client);
-      const eventsJSON = JSON.stringify(events);
-      const eventsParam = encodeURIComponent(eventsJSON);
-      res.redirect(`http://localhost:3000/group?events=${eventsParam}`);
+    if (!exists || exists) {
+      // Fetch the list of calendars
+      const calendars = await listCalendars(oauth2Client);
+
+      // Send the calendar data and events data to the CalendarSelect URL
+      res.cookie('userEmail', data.email).redirect(`http://localhost:3000/CalendarSelect?calendars=${JSON.stringify(calendars)}`);
     } else {
       // Handle other cases or errors
       res.status(500).send("Unable to save user");
@@ -174,10 +214,6 @@ app.get('/redirect', async (req, res) => {
     console.log(error);
     res.status(500).send("Unable to save user");
   }
-=======
-app.get('/google/redirect', (req, res) => {
-  res.send("redirect works!");
->>>>>>> main:server/app.js
 });
 
 app.get('/events', (req, res) => {

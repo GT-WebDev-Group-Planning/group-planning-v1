@@ -2,6 +2,7 @@ const createUser = require("./db/actions/createUser");
 const createInvitation = require('./db/actions/createInvitation');
 const createEvent = require('./db/actions/createEvent');
 const getInvitation = require('./db/actions/getInvitation');
+const getUser = require('./db/actions/getUser');
 
 const axios = require("axios")
 
@@ -289,12 +290,13 @@ app.post('/sendinvitation', async (req, res) => {
   console.log(invitationData);
 
   invitationData.eventData = eventData;
-  await createInvitation(invitationData, res);
+  const invitation = await createInvitation(invitationData, res);
 
   // add invitation to users
-  invitationData.users_sent_to.forEach(user => {
-    
-  });
+  for (email of invitationData.users_sent_to) {
+    const person = await getUser(email);
+    person.invitations.append(invitation._id);
+  }
 
   res.status(200).send('OK');
   // res.sendStatus(200);
@@ -305,10 +307,21 @@ app.all('/acceptinvitation/:invitationId', async (req, res) => {
   const invitationId = req.params.invitationId;
   // get invitation from database
   const invitation = await getInvitation(invitationId)[0];
+  if (invitation.users_accepted.includes(user)) return res.status(200).send("User already accepted invitation");
   // check if user email is part of users invited (sent to) just in case
+  let invited = false;
+  for (person of invitation.users_sent_to) {
+    if (person === user) {
+      invited = true;
+      break;
+    }
+  }
+  if (!invited) return res.status(400).send("User was not invited");
   // console.log(invitation);
   // console.log(invitation.event);
   // update accepted users on invitation
+  invitation.users_accepted.push(user);
+  await invitation.save();
   // add the event to the user calendar
   await addEvent(invitation.event);
   res.send("Hello");
@@ -322,8 +335,9 @@ async function addEvent(eventData) {
   });
 }
 
-// returns all evites of a user
-app.get('/user/:userId/evites', (req, res) => {
+// returns all invitations of a user
+app.get('/user/:user/invitations', (req, res) => {
+  // add authentication here (passportjs?)
 
 });
 

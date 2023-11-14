@@ -11,7 +11,8 @@ async function createUser(userData, res) {
     }
     const groups = [];
     const events = [];
-    const user = new User({ email, name, events, groups });
+    const invitations = [];
+    const user = new User({ email, name, events, groups, invitations });
     await user.save();
     return false;
   } catch (e) {

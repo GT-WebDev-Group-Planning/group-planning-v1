@@ -21,7 +21,7 @@ async function createInvitation(inviteData, res) {
       users_accepted: users_accepted
     });
     await invitation.save();
-    return false;
+    return invitation;
   } catch (e) {
     return res.status(400).send("Unable to create invitation.");
   }

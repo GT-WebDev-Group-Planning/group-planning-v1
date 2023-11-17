@@ -308,23 +308,36 @@ app.all('/acceptinvitation/:invitationId', async (req, res) => {
   const invitationId = req.params.invitationId;
   // get invitation from database
   const invitation = await getInvitation(invitationId);
+
+  // get user info (email)
+  const token = await oauth2Client.getAccessToken();
+
+  const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token.token}`);
+  const user = data.email;
+
+  // check if user email is part of users invited (sent to) or accepted just in case
   if (invitation.users_accepted.includes(user)) return res.status(200).send("User already accepted invitation");
-  // check if user email is part of users invited (sent to) just in case
-  let invited = false;
-  for (person of invitation.users_sent_to) {
-    if (person === user) {
-      invited = true;
-      break;
-    }
-  }
-  if (!invited) return res.status(400).send("User was not invited");
-  // console.log(invitation);
-  // console.log(invitation.event);
+  if (!invitation.users_sent_to.includes(user)) return res.status(400).send("User was not invited"); 
+
   // update accepted users on invitation
   invitation.users_accepted.push(user);
   await invitation.save();
   // add the event to the user calendar
-  await addEvent(invitation.event);
+  const invitationEvent = invitation.event.toObject();
+  const event = {
+    "kind": "calender#event",
+    "summary": invitationEvent.summary,
+    "description": invitationEvent.description,
+    "start": {
+      'dateTime': invitationEvent.start,
+      'timeZone': invitationEvent.timeZone,
+    },
+    "end": {
+      'dateTime': invitationEvent.end,
+      'timeZone': invitationEvent.timeZone,
+    }
+  };
+  await addEvent(event);
   res.send("Hello");
 });
 

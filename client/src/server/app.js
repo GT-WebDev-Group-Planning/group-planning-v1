@@ -157,14 +157,6 @@ app.get('/redirect', async (req, res) => {
 
     const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokens.access_token}`);
 
-    // console.log(data);
-
-    /*
-    if (await createUser(data, res).statusCode === 400) {
-      return await createUser(data, res);
-    }
-    */
-
     const exists = await createUser(data, res);
     if (exists.statusCode === 400) return exists;
 
@@ -213,86 +205,31 @@ app.post('/createcalendar', (req, res) => {
 });
 
 // creates and sends an invitation to user(s)
-// currently adds an invitation to the database and "gives" it to any user specified
-// THINGS TO CONSIDER: how to give the intended user the event on accepting the invitation
-
-/* 
-  Add on primary - not shared, only adds single event. We'd have to store all relevant information of the event in the schema
+// req body must include invitation data as an object in the form of 
+/*
+invitation = {
+  title,
+  description,
+  users_sent_to
+}
 */
-
-// temporary .all to listen to all types of http requests, change later to post
-app.all('/sendinvite', async (req, res) => {
-  // gets a testing public calendar, just so accepted invites don't modify existing calendars
-  // const calendar = google.calendar({version: 'v3', auth: oauth2Client});
-  
-  /*
-  const calendarId = 'a3cbb914f3b106872b6593930dad01a7cd54ba7574e16b4514590481905b144f@group.calendar.google.com';
-
-  // YYYY-MM-DDTHH:MM
-  console.log(new Date().toISOString());
-  const curDate = new Date().toISOString().substring(0, 16);
-  const hour = curDate.slice(-5, -3);
-  const startDate = curDate.concat(":00Z");
-  const endDate = curDate.slice(0, -5).concat(((parseInt(hour) + 1) % 24).toString()).concat(":00:00Z");
-  console.log(startDate);
-  console.log(endDate);
-  return;
-  const body = req.body();
-
-  // create sample event
-  const event = {
-    "kind": "calender#event",
-    "description": "test sample event",
-    "start": {
-      'dateTime': startDate,
-      'timeZone': 'America/New_York'
-    },
-    "end": {
-      'dateTime': endDate,
-      'timeZone': 'America/New_York'
-    }
-  };
-  */
-
-  // insert test calendar if not already there
-  calendar.calendarList.insert({
-    resource: { id: calendarId },
-    auth: oauth2Client,
-  }).then((cal) => {
-    calendar.events.insert({
-      calendarId: calendarId,
-      resource: event,
-      auth: oauth2Client,
-    }).then(async (event, err) => {
-      if (err) {
-        console.log("Error adding event: %s", err);
-      } else {
-        console.log("Event: %s", event);
-        console.log(event.data);
-      }
-      // create invitation
-      await createInvitation({
-        description: "test invitation",
-        eventId: event.data.id,
-        users_sent_to: [],
-      }, res);
-    });
-  });
-  res.status(200).send("Invite sent");
-});
-
-// sends invitation
+// and event data as an object in the form of
+/*
+event = {
+  start, 
+  end, 
+  timeZone, 
+  summary, 
+  description
+}
+*/
 app.post('/sendinvitation', async (req, res) => {
-  // check if invitation has all required information
+  // retrieve invite and event data
   const { eventData, invitationData } = req.body;
-  
-  // console.log(eventData);
-  // console.log(invitationData);
-
   invitationData.eventData = eventData;
   const invitation = await createInvitation(invitationData, res);
 
-  // add invitation to users
+  // add invitation to all users the invite was sent to
   for (email of invitationData.users_sent_to) {
     const person = await getUser(email);
     person.invitations.push(invitation._id);
@@ -300,11 +237,10 @@ app.post('/sendinvitation', async (req, res) => {
   }
 
   res.status(200).send('OK');
-  // res.sendStatus(200);
 });
 
 // accept invitation and add event of invitation
-app.all('/acceptinvitation/:invitationId', async (req, res) => {
+app.post('/acceptinvitation/:invitationId', async (req, res) => {
   const invitationId = req.params.invitationId;
   // get invitation from database
   const invitation = await getInvitation(invitationId);
@@ -350,9 +286,29 @@ async function addEvent(eventData) {
 }
 
 // returns all invitations of a user
-app.get('/user/:user/invitations', (req, res) => {
-  // add authentication here (passportjs?)
+// returns a json of the form
+/*
+{
+  invitations: [invitation1, invitation2, ...]
+}
+*/
+// each invitation will have all of its data as defined by the Invitation model
+app.get('/getinvitations', async (req, res) => {
+  // get user info (email)
+  const token = await oauth2Client.getAccessToken();
 
+  const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token.token}`);
+  const user = await getUser(data.email);
+
+  const invitations = [];
+  for (invitationId of user.invitations) {
+    const invitation = await getInvitation(invitationId);
+    // remove unneccessary information
+    const { _id, schema_version, users_sent_to, users_accepted, __v, ...invitationObj } = invitation.toObject();
+    invitations.push(invitationObj);
+  }
+
+  res.json({ "invitations": invitations });
 });
 
 start();

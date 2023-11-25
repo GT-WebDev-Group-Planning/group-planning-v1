@@ -1,6 +1,6 @@
 // CalendarSelectWindow.js
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import CalendarListItem from './CalendarListItem';
 import './CalendarSelect.css';
 
@@ -34,7 +34,7 @@ export default function CalendarSelectWindow() {
       })}
       </div>
       <div className="CalendarSelectWindowFooter">
-        <button className="button">Import Selected Calendars</button>
+        <button className="button"><Link to="/group">Import Selected Calendars</Link></button>
       </div>
     </div>
   );

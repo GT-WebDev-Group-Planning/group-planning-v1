@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import GroupComponent from '../components/GroupComponent';
 
 function Group() {
   const location = useLocation();

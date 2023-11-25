@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from '../../components/Navbar';
 import './calendar.css';
 
 const Calendar = () => {
@@ -50,6 +51,7 @@ const Calendar = () => {
   return (
     <div className="Calendar" >
       <div className="NavBar">
+        <Navbar />
       </div>
       <div className='LeftSide'>
         <div className="circles">

@@ -9,6 +9,7 @@ import Group from './pages/Group';
 import JoinGroup from './pages/join_group/JoinGroup';
 import Login from './pages/LogIn';
 import CalendarSelect from './pages/CalendarSelect/CalendarSelect';
+import Event from './pages/Event';
 import Test from './pages/Test';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -23,6 +24,7 @@ root.render(
         <Route path="/joingroup" element={<JoinGroup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/calendarselect" element={<CalendarSelect />} />
+        <Route path="/events" element={<Event />} />
         <Route path="/test" element={<Test />} />
       </Routes>
     </Router>

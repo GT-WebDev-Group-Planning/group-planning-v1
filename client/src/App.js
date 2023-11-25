@@ -8,9 +8,9 @@ function App() {
         <button><Link to="/evite">Create Event</Link></button>
         <button><Link to="/group">Group</Link></button>
         <button><Link to="/joingroup">Join Group</Link></button>
-        <button><Link to="/login">Login</Link></button>
+        {/* <button><Link to="/login">Login</Link></button> */}
         <button><Link to="/CalendarSelect">Calendar Select</Link></button>
-        <button><Link to="/test">Test</Link></button>
+        <button><Link to="/test">Login</Link></button>
       </div>
     );
   }

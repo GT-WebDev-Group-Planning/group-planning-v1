@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 function Group() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function Group() {
 
   return (
     <div className="Group">
+      <Navbar />
       <h1>Group Page</h1>
       <h2>Events</h2>
       <ul>

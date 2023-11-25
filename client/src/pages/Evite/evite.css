@@ -1,10 +1,19 @@
-*{
-    
-}
 select {
     width:200px
 }
 
-input {
+input.description {
     width: 400px;
+}
+
+input.title {
+    width: 200px
+}
+
+input.invitee {
+    width: 200px
+}
+
+h1.createEvent {
+    color:indigo
 }

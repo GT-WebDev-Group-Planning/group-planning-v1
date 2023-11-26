@@ -3,25 +3,38 @@ import { useLocation, Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import GroupComponent from '../../components/GroupComponent/GroupComponent';
 import './group.css'
+import axios from 'axios';
 
 function Group() {
   const location = useLocation();
+  const [groups, setGroups] = useState([]);
   const [events, setEvents] = useState([]);
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const eventsParam = searchParams.get("events");
+  // useEffect(() => {
+  //   const searchParams = new URLSearchParams(location.search);
+  //   const eventsParam = searchParams.get("events");
 
-    if (eventsParam) {
-      try {
-        const decodedEventsParam = decodeURIComponent(eventsParam);
-        const parsedEvents = JSON.parse(decodedEventsParam);
-        setEvents(parsedEvents);
-      } catch (error) {
-        console.error("Error parsing events data:", error);
-      }
-    }
-  }, [location.search]);
+  //   if (eventsParam) {
+  //     try {
+  //       const decodedEventsParam = decodeURIComponent(eventsParam);
+  //       const parsedEvents = JSON.parse(decodedEventsParam);
+  //       setEvents(parsedEvents);
+  //     } catch (error) {
+  //       console.error("Error parsing events data:", error);
+  //     }
+  //   }
+  // }, [location.search]);
+
+  useEffect(() => {
+    axios
+    .get('http://localhost:5000/group')
+    .then((response) => {
+        setGroups(response.data.data);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+}, []);
 
   return (
     <div className="Group">
@@ -34,24 +47,17 @@ function Group() {
         </div>
       </div>
       <div className="gridContainer">
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
-        <GroupComponent name="Study Buddies" description="Study group made for 2200"/>
+        {groups.map((group) => (
+          <GroupComponent name={group.name} code = {group.code} description={group.description} />
+        ))};
       </div>
-      <ul>
+      {/* <ul>
         {events.map((event, index) => (
           <li key={index}>
             {event.start && event.start.dateTime} - {event.summary}
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 }

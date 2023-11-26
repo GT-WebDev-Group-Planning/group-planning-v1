@@ -1,11 +1,12 @@
 import React from 'react'
 import "./groupcomponent.css"
 
-const GroupComponent = ({ name, description }) => {
+const GroupComponent = ({ name, code, description }) => {
   return (
     <div className = "groupComponent">
         <h3>{name}</h3>
-        <p><strong>date</strong> upcoming event tile</p>
+        <h3>{code}</h3>
+        {/* <p><strong>date</strong> upcoming event title</p> */}
         <p>{description}</p>
     </div>
   )

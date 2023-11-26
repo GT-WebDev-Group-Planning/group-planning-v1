@@ -1,6 +1,8 @@
 const createUser = require("./db/actions/createUser");
 const createGroup = require("./db/actions/createGroup");
 const updateEvents = require("./db/actions/updateEvents");
+const getGroups = require("./db/actions/getGroups");
+require('dotenv').config();
 
 const axios = require("axios")
 
@@ -135,6 +137,10 @@ app.post('/group', async (req, res) => {
   } else {
     res.status(500).send("Unable to create group");
   }
+});
+
+app.get('/group', async (request, response) => {
+  return getGroups(request, response);
 });
 
 app.get('/redirect', async (req, res) => {

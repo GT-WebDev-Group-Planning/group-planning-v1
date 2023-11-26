@@ -11,17 +11,19 @@ import Login from './pages/LogIn';
 import CalendarSelect from './pages/CalendarSelect/CalendarSelect';
 import Event from './pages/Event/Event';
 import Test from './pages/Test';
+import CreateGroup from './pages/join_group/CreateGroup';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path="" element={<App />} />
+        <Route path="" element={<Test />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/evite" element={<Evite />} />
         <Route path="/group" element={<Group />} />
         <Route path="/joingroup" element={<JoinGroup />} />
+        <Route path="/creategroup" element={<CreateGroup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/calendarselect" element={<CalendarSelect />} />
         <Route path="/events" element={<Event />} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import GroupComponent from '../../components/GroupComponent/GroupComponent';
 import './group.css'
@@ -29,8 +29,8 @@ function Group() {
       <div className="top">
         <input type="text" placeholder="Search Groups"></input>
         <div>
-        <button className="group-buttons">Join</button>
-        <button className="group-buttons">Create</button>
+        <button className="group-buttons"><Link to="/joingroup">Join</Link></button>
+        <button className="group-buttons"><Link to="/creategroup">Create</Link></button>
         </div>
       </div>
       <div className="gridContainer">

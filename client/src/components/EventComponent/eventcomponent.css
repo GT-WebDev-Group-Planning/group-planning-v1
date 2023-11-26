@@ -1,0 +1,7 @@
+.eventComponent {
+    border: 1px solid black;
+    margin: 20px auto;
+    width: 80%;
+    border-radius: 10px;
+    padding: 10px 20px;
+}

@@ -4,7 +4,7 @@ import "./group.css"
 const JoinGroup = () => {
     const [code, setCode] = useState("");
     return (
-      <div className="field">
+      <div className="centered">
         <h2>Join Group</h2>
         <p className="input-text">Enter Group Code: </p>
         <input type="text" value={code} placeholder="e.g. 123456"/>

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Calendar from './pages/Calendar/Calendar';
 import Evite from './pages/Evite/Evite';
@@ -12,10 +11,12 @@ import CalendarSelect from './pages/CalendarSelect/CalendarSelect';
 import Event from './pages/Event/Event';
 import Test from './pages/Test';
 import CreateGroup from './pages/join_group/CreateGroup';
+import { SnackbarProvider } from 'notistack';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <SnackbarProvider>
     <Router>
       <Routes>
         <Route path="" element={<Test />} />
@@ -30,5 +31,6 @@ root.render(
         <Route path="/test" element={<Test />} />
       </Routes>
     </Router>
+    </SnackbarProvider>
   </React.StrictMode>
 );

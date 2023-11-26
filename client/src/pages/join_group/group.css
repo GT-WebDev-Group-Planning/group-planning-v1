@@ -1,7 +1,9 @@
-.gridContainer {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
 }
 
 .top {
@@ -11,22 +13,42 @@
     margin-bottom: 20px;
 }
 
-.group-button {
+.create-button {
     font-size: 24px;
-    margin: 50px;
-    margin-top: 50px;
-    padding: 2.5px;
-    border-radius: 10px;
+    margin-top: 20px;
+    padding: 3px;
+    border-radius: 5px;
     border-width: 1px;
-    height: 37px;
-    width: 150px;
+    height: 60px;
+    width: 510px;
     cursor: pointer;
 }
 
-input {
-    width: 40%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid black;
-    margin-left: 60px;
+.create-input {
+    font-size: 18px;
+    border-radius: 5px;
+    width: 500px;
+    margin-left: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+textarea {
+    font-size: 18px;
+    width: 500px;
+    height: 150px;
+    border-radius: 5px;
+    margin-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+}
+
+p {
+    font-size: 18px;
+}
+
+h2 {
+    font-size: 30px;
+    margin-bottom: 0px;
 }

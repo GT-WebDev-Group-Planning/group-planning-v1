@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "./group.css"
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSnackbar } from 'notistack'
 
 const CreateGroup = () => {
     const [name, setName] = useState("");
@@ -9,6 +10,7 @@ const CreateGroup = () => {
     const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleSaveGroup = () => {
         const data = {
@@ -19,18 +21,19 @@ const CreateGroup = () => {
         setLoading(true);
         axios.post('http://localhost:5000/group', data)
         .then (() => {
-            setLoading(false);
+            enqueueSnackbar('Group Created Successfully', {variant: 'success'});
             navigate('/group');
         })
         .catch((error) => {
-            setLoading(false);
+            enqueueSnackbar('Code Already in Use', {variant: 'error'});
             console.log(error);
         });
     };
 
     return (
-        <div className="field">
+        <div className="centered">
           <h2>Create Group</h2>
+          <br />
           <div className="inputs-col">
             <div className="input-row">
               <p className="input-text">Name: </p>
@@ -38,6 +41,7 @@ const CreateGroup = () => {
                 type = "text"
                 value = { name }
                 onChange = {(e) => setName(e.target.value)}
+                className = "create-input"
               />
             </div>
             <div className="input-row">
@@ -45,6 +49,7 @@ const CreateGroup = () => {
               <input type="text"
                 value = { code }
                 onChange = {(e) => setCode(e.target.value)}
+                className = "create-input"
               />
             </div>
             <div className="input-row">
@@ -54,7 +59,7 @@ const CreateGroup = () => {
                 onChange = {(e) => setDescription(e.target.value)}
               />
             </div>
-            <button className="button self-center"
+            <button className="create-button"
             onClick={handleSaveGroup}>
               Create Group
             </button>

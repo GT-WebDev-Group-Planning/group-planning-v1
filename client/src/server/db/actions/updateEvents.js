@@ -17,7 +17,14 @@ async function updateEvents(userEmail, events) {
 
     if (userExists) {
       console.log("User exists. Updating events..."); // Add this line for debugging
-      await User.updateOne({ email: userEmail }, { $set: { events: events } });
+      const cleanEvents = events.map(event => {
+        return {
+          start: event.start.dateTime,
+          end: event.end.dateTime,
+          summary: event.summary
+        };
+      });
+      await User.updateOne({ email: userEmail }, { $set: { events: cleanEvents } });
       console.log("Events updated successfully."); // Add this line for debugging
       return true;
     } else {

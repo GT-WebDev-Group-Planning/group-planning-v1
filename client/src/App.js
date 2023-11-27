@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 function App() {
+  const [userEmail, setUserEmail] = useState("user@example.com");
+  const handleEmailChange = (newEmail) => {
+    setUserEmail(newEmail);
+  };
     return (
       <div className="App">
         <Navbar />

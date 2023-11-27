@@ -1,12 +1,11 @@
 import React from 'react'
 import "./eventcomponent.css"
 
-const EventComponent = ({ name, date, time, description }) => {
+const EventComponent = ({ start, end, summary }) => {
   return (
     <div className = "eventComponent">
-        <h3>{name}</h3>
-        <h5>{date}  {time}</h5>
-        <p>{description}</p>
+        <h3>{summary}</h3>
+        <h5>{start}  {end}</h5>
     </div>
   )
 }

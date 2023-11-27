@@ -4,25 +4,42 @@ const updateEvents = require("./db/actions/updateEvents");
 const getGroups = require("./db/actions/getGroups");
 require('dotenv').config();
 
+const jwt = require('jsonwebtoken');
+
 const axios = require("axios")
 
 const cookieParser = require('cookie-parser');
 
-require('dotenv').config();
-
-const express = require('express');
-const cors = require('cors');
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-app.use(cookieParser());
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const fs = require('fs').promises;
 const path = require('path');
 const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
+
+const store = new MongoDBStore({
+  uri: process.env.MONGO_URI,
+  collection: 'sessions',
+});
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+  store: store,
+  cookie: { secure: false, maxAge: 1000 * 60 * 60 }, // 1 hour
+}));
+
+require('dotenv').config();
+
+app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -49,8 +66,11 @@ const connectDB = require('./db/connect');
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  * @param {string} id The calendar ID.
  */
-async function listEvents(auth, id) {
+async function listEvents(auth, id, userEmail) {
   const calendar = google.calendar({ version: 'v3', auth });
+  if (userEmail === id) {
+    id = "primary";
+  }
   const res = await calendar.events.list({
     calendarId: id,
     timeMin: new Date().toISOString(),
@@ -66,20 +86,19 @@ async function listEvents(auth, id) {
   console.log('Upcoming 10 events:');
   events.map((event, i) => {
     const start = event.start.dateTime || event.start.date;
-    console.log(`${start} - ${event.summary}`);
   });
   return events; // Return the events array
 }
 
 app.get('/events', async (req, res) => {
   try {
-    const events = await listEvents(oauth2Client, req.query.calendar);
+    const userEmail = req.cookies.userEmail;
+    const events = await listEvents(oauth2Client, req.query.calendar, userEmail);
     const eventsJSON = JSON.stringify(events);
     const eventsParam = encodeURIComponent(eventsJSON);
-    const userEmail = req.cookies.userEmail;
     const updated = await updateEvents(userEmail, events);
     if (updated) {
-      res.redirect(`http://localhost:3000/group?events=${eventsParam}`);
+      res.redirect(`http://localhost:3000/group?email=${userEmail}`);
     }
     else {
       res.redirect(`http://localhost:3000`);
@@ -111,6 +130,44 @@ async function listCalendars(auth) {
 
   return calendarData; // Return the list of calendars with IDs and summaries
 }
+
+app.get('/getEvents', async (req, res) => {
+  try {
+    // Get the token from the request headers or query parameters
+    const token = req.headers.authorization || req.query.token;
+
+    if (!token) {
+      console.log("Authorization token not found.");
+      return res.status(401).send("Authorization token not found.");
+    }
+
+    // Verify the token and extract the payload
+    const decoded = jwt.verify(token, 'your-secret-key');
+
+    if (!decoded || !decoded.email) {
+      console.log("Invalid or missing email in the token.");
+      return res.status(401).send("Invalid or missing email in the token.");
+    }
+
+    const userEmail = decoded.email;
+
+    // Fetch events from the database based on user email
+    const user = await User.findOne({ email: userEmail });
+
+    if (!user) {
+      console.log("User not found in the database.");
+      return res.status(404).send("User not found in the database.");
+    }
+
+    const events = user.events || [];
+
+    // Respond with the events data
+    res.status(200).json({ events });
+  } catch (error) {
+    console.error('Error fetching events from the database:', error);
+    res.status(500).send('Error fetching events from the database');
+  }
+});
 
 app.get('/', (req, res) => {
   res.send('<h1>Testing</h1>');
@@ -163,7 +220,12 @@ app.get('/redirect', async (req, res) => {
     if (!exists || exists) {
       // Fetch the list of calendars
       const calendars = await listCalendars(oauth2Client);
+      const jwt = require('jsonwebtoken');
 
+      const generateToken = (userEmail) => {
+        const token = jwt.sign({ email: userEmail }, 'your-secret-key', { expiresIn: '1h' });
+        return token;
+      };
       // Send the calendar data and events data to the CalendarSelect URL
       res.cookie('userEmail', data.email).redirect(`http://localhost:3000/CalendarSelect?calendars=${JSON.stringify(calendars)}`);
     } else {

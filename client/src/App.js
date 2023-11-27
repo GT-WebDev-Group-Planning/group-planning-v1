@@ -10,6 +10,7 @@ import Event from './pages/Event/Event';
 import Test from './pages/Test';
 import CreateGroup from './pages/join_group/CreateGroup';
 import { SnackbarProvider } from 'notistack';
+import React, { useState } from 'react';
 
 function App() {
   const [userEmail, setUserEmail] = useState("user@example.com");

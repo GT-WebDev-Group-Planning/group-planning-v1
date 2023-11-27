@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import './calendar.css';
 
-const Calendar = () => {
+const Calendar = ({ userEmail, setUserEmail }) => {
   const months = [
     'January', 'February', 'March', 'April',
     'May', 'June', 'July', 'August',

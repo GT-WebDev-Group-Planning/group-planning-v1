@@ -21,16 +21,16 @@ function App() {
     <SnackbarProvider>
     <Router>
       <Routes>
-        <Route path="" element={<Test />} />
-        <Route path="/calendar" element={<Calendar />} />
-        <Route path="/evite" element={<Evite />} />
-        <Route path="/group" element={<Group />} />
-        <Route path="/joingroup" element={<JoinGroup />} />
-        <Route path="/creategroup" element={<CreateGroup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/calendarselect" element={<CalendarSelect />} />
-        <Route path="/events" element={<Event />} />
-        <Route path="/test" element={<Test />} />
+        <Route path="" element={<Test userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="/calendar" element={<Calendar userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="/evite" element={<Evite userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="/group" element={<Group userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="/joingroup" element={<JoinGroup userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="/creategroup" element={<CreateGroup userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="/login" element={<Login userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="/calendarselect" element={<CalendarSelect userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="/events" element={<Event userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="/test" element={<Test userEmail={userEmail} setUserEmail={setUserEmail} />} />
       </Routes>
     </Router>
     </SnackbarProvider>

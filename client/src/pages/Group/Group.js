@@ -5,7 +5,7 @@ import GroupComponent from '../../components/GroupComponent/GroupComponent';
 import './group.css'
 import axios from 'axios';
 
-function Group(email) {
+function Group({ userEmail, setUserEmail }) {
   const location = useLocation();
   const [groups, setGroups] = useState([]);
   const [events, setEvents] = useState([]);
@@ -38,7 +38,7 @@ function Group(email) {
 
   return (
     <div className="Group">
-      <Navbar email={email} />
+      <Navbar email={userEmail} />
       <div className="top">
         <input type="text" placeholder="Search Groups"></input>
         <div>

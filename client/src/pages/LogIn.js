@@ -1,6 +1,6 @@
 import React from "react";
 
-function Login() {
+function Login({ userEmail, setUserEmail }) {
   return (
     <div className="LogIn">
       <h1>Log In Page</h1>

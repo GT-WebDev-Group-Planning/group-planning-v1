@@ -3,7 +3,7 @@ import invitation from './invitation_picture.png';
 import friends from './friends.png'
 import { Link } from "react-router-dom";
 import './evite.css'
-function Evite() {
+function Evite({ userEmail, setUserEmail }) {
     function Dropdown(){
         const [option, setOption] = useState('');
         const handleChange = (e) => {

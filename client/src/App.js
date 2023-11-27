@@ -1,5 +1,16 @@
-import { Link } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import './index.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Calendar from './pages/Calendar/Calendar';
+import Evite from './pages/Evite/Evite';
+import Group from './pages/Group/Group';
+import JoinGroup from './pages/join_group/JoinGroup';
+import Login from './pages/LogIn';
+import CalendarSelect from './pages/CalendarSelect/CalendarSelect';
+import Event from './pages/Event/Event';
+import Test from './pages/Test';
+import CreateGroup from './pages/join_group/CreateGroup';
+import { SnackbarProvider } from 'notistack';
+import React, { useState } from 'react';
 
 function App() {
   const [userEmail, setUserEmail] = useState("user@example.com");
@@ -7,19 +18,22 @@ function App() {
     setUserEmail(newEmail);
   };
     return (
-      <div className="App">
-        <Navbar />
-        <h1>Group Planning</h1>
-        <button><Link to="/calendar">Calendar</Link></button>
-        {/* <button><Link to="/evite">Create Event</Link></button> */}
-        <button><Link to="/group">Group</Link></button>
-        <button><Link to="/joingroup">Join Group</Link></button>
-        <button><Link to="/creategroup">Create Group</Link></button>
-        {/* <button><Link to="/login">Login</Link></button> */}
-        <button><Link to="/CalendarSelect">Calendar Select</Link></button>
-        <button><Link to="/events">Event</Link></button>
-        <button><Link to="/test">Login</Link></button>
-      </div>
+    <SnackbarProvider>
+    <Router>
+      <Routes>
+        <Route path="" element={<Test />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/evite" element={<Evite />} />
+        <Route path="/group" element={<Group />} />
+        <Route path="/joingroup" element={<JoinGroup />} />
+        <Route path="/creategroup" element={<CreateGroup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/calendarselect" element={<CalendarSelect />} />
+        <Route path="/events" element={<Event />} />
+        <Route path="/test" element={<Test />} />
+      </Routes>
+    </Router>
+    </SnackbarProvider>
     );
   }
   

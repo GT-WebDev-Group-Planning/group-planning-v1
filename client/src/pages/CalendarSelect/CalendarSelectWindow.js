@@ -33,9 +33,6 @@ export default function CalendarSelectWindow() {
         return <CalendarListItem calendarId={calendar.id} name={calendar.summary} />;
       })}
       </div>
-      <div className="CalendarSelectWindowFooter">
-        <button className="button"><Link to="/group">Import Selected Calendars</Link></button>
-      </div>
     </div>
   );
 }

@@ -12,6 +12,10 @@ import CreateGroup from './pages/join_group/CreateGroup';
 import { SnackbarProvider } from 'notistack';
 
 function App() {
+  const [userEmail, setUserEmail] = useState("user@example.com");
+  const handleEmailChange = (newEmail) => {
+    setUserEmail(newEmail);
+  };
     return (
     <SnackbarProvider>
     <Router>

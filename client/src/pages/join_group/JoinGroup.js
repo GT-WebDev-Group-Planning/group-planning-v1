@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./group.css"
 
-const JoinGroup = ({ userEmail, setUserEmail }) => {
+const JoinGroup = ({ userEmail, handleEmailChange }) => {
     const [code, setCode] = useState("");
     return (
       <div className="centered">

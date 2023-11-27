@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './test.css';
 
-function Test({ userEmail, setUserEmail }) {
+function Test({ userEmail, handleEmailChange }) {
   return (
     <div className='gray-div'>
       <h1>WELCOME!</h1>

@@ -3,7 +3,7 @@ import Navbar from '../../components/Navbar'
 import EventComponent from '../../components/EventComponent/EventComponent'
 import axios from 'axios';
 
-const Event = ({ userEmail, setUserEmail }) => {
+const Event = ({ userEmail, handleEmailChange }) => {
   const [events, setEvents] = useState([]);
   useEffect(() => {
     const fetchEvents = async () => {

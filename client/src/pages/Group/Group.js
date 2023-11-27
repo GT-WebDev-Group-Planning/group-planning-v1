@@ -5,7 +5,7 @@ import GroupComponent from '../../components/GroupComponent/GroupComponent';
 import './group.css'
 import axios from 'axios';
 
-function Group({ userEmail, setUserEmail }) {
+function Group({ userEmail, handleEmailChange }) {
   const location = useLocation();
   const [groups, setGroups] = useState([]);
   const [events, setEvents] = useState([]);

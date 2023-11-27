@@ -21,16 +21,16 @@ function App() {
     <SnackbarProvider>
     <Router>
       <Routes>
-        <Route path="" element={<Test userEmail={userEmail} setUserEmail={setUserEmail} />} />
-        <Route path="/calendar" element={<Calendar userEmail={userEmail} setUserEmail={setUserEmail} />} />
-        <Route path="/evite" element={<Evite userEmail={userEmail} setUserEmail={setUserEmail} />} />
-        <Route path="/group" element={<Group userEmail={userEmail} setUserEmail={setUserEmail} />} />
-        <Route path="/joingroup" element={<JoinGroup userEmail={userEmail} setUserEmail={setUserEmail} />} />
-        <Route path="/creategroup" element={<CreateGroup userEmail={userEmail} setUserEmail={setUserEmail} />} />
-        <Route path="/login" element={<Login userEmail={userEmail} setUserEmail={setUserEmail} />} />
-        <Route path="/calendarselect" element={<CalendarSelect userEmail={userEmail} setUserEmail={setUserEmail} />} />
-        <Route path="/events" element={<Event userEmail={userEmail} setUserEmail={setUserEmail} />} />
-        <Route path="/test" element={<Test userEmail={userEmail} setUserEmail={setUserEmail} />} />
+        <Route path="" element={<Test userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/calendar" element={<Calendar userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/evite" element={<Evite userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/group" element={<Group userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/joingroup" element={<JoinGroup userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/creategroup" element={<CreateGroup userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/login" element={<Login userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/calendarselect" element={<CalendarSelect userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/events" element={<Event userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/test" element={<Test userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
       </Routes>
     </Router>
     </SnackbarProvider>

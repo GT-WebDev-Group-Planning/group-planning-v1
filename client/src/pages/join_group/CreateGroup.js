@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSnackbar } from 'notistack'
 
-const CreateGroup = ({ userEmail, setUserEmail }) => {
+const CreateGroup = ({ userEmail, handleEmailChange }) => {
     const [name, setName] = useState("");
     const [code, setCode] = useState("");
     const [description, setDescription] = useState("");

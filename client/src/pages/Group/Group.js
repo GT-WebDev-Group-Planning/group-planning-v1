@@ -6,9 +6,22 @@ import './group.css'
 import axios from 'axios';
 
 function Group({ userEmail, handleEmailChange }) {
-  const location = useLocation();
   const [groups, setGroups] = useState([]);
-  const [events, setEvents] = useState([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const emailParam = searchParams.get('email');
+
+    if (emailParam) {
+      try {
+        const parsedEmail = JSON.parse(emailParam);
+        setUserEmail(parsedEmail);
+      } catch (error) {
+        console.error('Error parsing email data:', error);
+      }
+    }
+  }, [location.search]);
 
   // useEffect(() => {
   //   const searchParams = new URLSearchParams(location.search);
@@ -38,7 +51,7 @@ function Group({ userEmail, handleEmailChange }) {
 
   return (
     <div className="Group">
-      <Navbar email={userEmail} />
+      <Navbar />
       <div className="top">
         <input type="text" placeholder="Search Groups"></input>
         <div>

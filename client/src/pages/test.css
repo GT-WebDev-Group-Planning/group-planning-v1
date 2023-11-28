@@ -1,0 +1,22 @@
+.gray-div {
+    background-color: #f2f2f2;
+    padding: 40px;
+    border-radius: 10px;
+    margin: 200px 500px;
+
+}
+
+button {
+    font-size: 24px;
+    margin-top: 100px;
+    padding: 20px;
+    border-radius: 20px;
+    width: 100%;
+    cursor: pointer;
+    background-color: white; /* Add your desired background color */
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}

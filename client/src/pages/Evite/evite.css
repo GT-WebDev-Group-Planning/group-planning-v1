@@ -10,4 +10,22 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+select {
+    width:200px
+}
+
+input.description {
+    width: 400px;
+}
+
+input.title {
+    width: 200px
+}
+
+input.invitee {
+    width: 200px
+}
+
+h1.createEvent {
+    color:indigo
 }

@@ -5,8 +5,13 @@ const UserSchema = new mongoose.Schema({
     email: String,
     name: String,
     groups: [String],
-    events: [String],
-    invitations: [mongoose.Types.ObjectId],
+    events: [
+      {
+        start: String,
+        end: String,
+        summary: String,
+      },
+    ],
     // ...other user information
   });
   

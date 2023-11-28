@@ -13,18 +13,5 @@ import Test from './pages/Test';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Router>
-      <Routes>
-        <Route path="" element={<App />} />
-        <Route path="/calendar" element={<Calendar />} />
-        <Route path="/evite" element={<Evite />} />
-        <Route path="/group" element={<Group />} />
-        <Route path="/joingroup" element={<JoinGroup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/calendarselect" element={<CalendarSelect />} />
-        <Route path="/test" element={<Test />} />
-      </Routes>
-    </Router>
-  </React.StrictMode>
+  <App />
 );

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import invitation from './invitation_picture.png';
 import friends from './friends.png'
 import { Link } from "react-router-dom";

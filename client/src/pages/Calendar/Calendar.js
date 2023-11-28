@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Navbar from '../../components/Navbar';
 import './calendar.css';
 
-const Calendar = () => {
+const Calendar = ({ userEmail, setUserEmail }) => {
   const months = [
     'January', 'February', 'March', 'April',
     'May', 'June', 'July', 'August',
@@ -49,6 +51,7 @@ const Calendar = () => {
   return (
     <div className="Calendar" >
       <div className="NavBar">
+        <Navbar />
       </div>
       <div className='LeftSide'>
         <div className="circles">
@@ -77,7 +80,7 @@ const Calendar = () => {
           <dt class='member0'>Get member based on group</dt>
           <dt class='member1'>Get member based on group</dt>
         </dl>
-        <button> Create Event </button>
+        <button><Link to="/evite"> Create Event </Link></button>
       </div>
       <iframe class = "gcal" src="https://calendar.google.com/calendar/embed?src=kieranmarland%40gmail.com&ctz=America%2FNew_York" style={{ width: '1000px', height: '600px', border: '0px'}}></iframe>
     </div>

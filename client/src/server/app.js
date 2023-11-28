@@ -3,23 +3,31 @@ const createInvitation = require('./db/actions/createInvitation');
 const createEvent = require('./db/actions/createEvent');
 const getInvitation = require('./db/actions/getInvitation');
 const getUser = require('./db/actions/getUser');
+const createGroup = require("./db/actions/createGroup");
+const updateEvents = require("./db/actions/updateEvents");
+const getGroups = require("./db/actions/getGroups");
+const getEvents = require("./db/actions/getEvents");
+require('dotenv').config();
 
 const axios = require("axios")
 
-require('dotenv').config();
-
-const express = require('express');
-const cors = require('cors');
-const app = express();
-
-app.use(cors());
-app.use(express.json());
+const cookieParser = require('cookie-parser');
 
 const fs = require('fs').promises;
 const path = require('path');
 const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
+
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+require('dotenv').config();
+
+app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -43,72 +51,20 @@ const connectDB = require('./db/connect');
 const { oauth2 } = require("googleapis/build/src/apis/oauth2");
 const { Console } = require("console");
 
-// const TOKEN_PATH = path.join(process.cwd(), 'token.json');
-// const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
-
-/**
- * Reads previously authorized credentials from the save file.
- *
- * @return {Promise<OAuth2Client|null>}
- */
-// async function loadSavedCredentialsIfExist() {
-//   try {
-//     const content = await fs.readFile(TOKEN_PATH);
-//     const credentials = JSON.parse(content);
-//     return google.auth.fromJSON(credentials);
-//   } catch (err) {
-//     return null;
-//   }
-// }
-
-/**
- * Serializes credentials to a file compatible with GoogleAUth.fromJSON.
- *
- * @param {OAuth2Client} client
- * @return {Promise<void>}
- */
-// async function saveCredentials(client) {
-//   const content = await fs.readFile(CREDENTIALS_PATH);
-//   const keys = JSON.parse(content);
-//   const key = keys.installed || keys.web;
-//   const payload = JSON.stringify({
-//     type: 'authorized_user',
-//     client_id: key.client_id,
-//     client_secret: key.client_secret,
-//     refresh_token: client.credentials.refresh_token,
-//   });
-//   await fs.writeFile(TOKEN_PATH, payload);
-// }
-
-/**
- * Load or request or authorization to call APIs.
- *
- */
-// async function authorize() {
-//   let client = await loadSavedCredentialsIfExist();
-//   if (client) {
-//     return client;
-//   }
-//   client = await authenticate({
-//     scopes: scopes,
-//     keyfilePath: CREDENTIALS_PATH,
-//   });
-//   if (client.credentials) {
-//     await saveCredentials(client);
-//   }
-//   return client;
-// }
-
 /**
  * Lists the next 10 events on the user's primary calendar.
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ * @param {string} id The calendar ID.
  */
-async function listEvents(auth) {
+async function listEvents(auth, id, userEmail) {
   const calendar = google.calendar({ version: 'v3', auth });
+  if (userEmail === id) {
+    id = "primary";
+  }
   const res = await calendar.events.list({
-    calendarId: 'primary',
+    calendarId: id,
     timeMin: new Date().toISOString(),
-    maxResults: 10,
+    maxResults: 20,
     singleEvents: true,
     orderBy: 'startTime',
   });
@@ -120,15 +76,56 @@ async function listEvents(auth) {
   console.log('Upcoming 10 events:');
   events.map((event, i) => {
     const start = event.start.dateTime || event.start.date;
-    console.log(`${start} - ${event.summary}`);
   });
   return events; // Return the events array
 }
 
+app.get('/events', async (req, res) => {
+  try {
+    const userEmail = req.cookies.userEmail;
+    const events = await listEvents(oauth2Client, req.query.calendar, userEmail);
+    const updated = await updateEvents(userEmail, events);
+    if (updated) {
+      res.redirect(`http://localhost:3000/group?email=${JSON.stringify(userEmail)}`);
+    }
+    else {
+      res.redirect(`http://localhost:3000`);
+    }
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    res.status(500).send('Error fetching events');
+  }
+});
+
+/**
+ * Lists the user's calendars with their IDs and summaries.
+ * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ */
+async function listCalendars(auth) {
+  const calendar = google.calendar({ version: 'v3', auth });
+  const calendarList = await calendar.calendarList.list();
+  const calendars = calendarList.data.items;
+
+  if (!calendars || calendars.length === 0) {
+    console.log('No calendars found.');
+    return [];
+  }
+
+  const calendarData = calendars.map((calendar) => ({
+    id: calendar.id,
+    summary: calendar.summary,
+  }));
+
+  return calendarData; // Return the list of calendars with IDs and summaries
+}
+
+app.get('/getEvents', async (req, res) => {
+  return getEvents(req, res);
+});
 
 app.get('/', (req, res) => {
   res.send('<h1>Testing</h1>');
-})
+});
 
 app.get('/message', (req, res) => {
     res.json({ message: "Hello from server!" });
@@ -138,9 +135,23 @@ app.get('/google', (req, res) => {
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope: scopes
-  })
+  });
 
   res.redirect(url);
+});
+
+app.post('/group', async (req, res) => {
+  const groupData = req.body;
+  const created = await createGroup(groupData, res);
+  if (created) {
+    res.status(200).send("Group created successfully");
+  } else {
+    res.status(500).send("Unable to create group");
+  }
+});
+
+app.get('/group', async (request, response) => {
+  return getGroups(request, response);
 });
 
 app.get('/redirect', async (req, res) => {
@@ -160,13 +171,11 @@ app.get('/redirect', async (req, res) => {
     const exists = await createUser(data, res);
     if (exists.statusCode === 400) return exists;
 
-    if (!exists) {
-      res.redirect('http://localhost:3000/CalendarSelect');
-    } else if (exists) {
-      const events = await listEvents(oauth2Client);
-      const eventsJSON = JSON.stringify(events);
-      const eventsParam = encodeURIComponent(eventsJSON);
-      res.redirect(`http://localhost:3000/group?events=${eventsParam}`);
+    if (!exists || exists) {
+      // Fetch the list of calendars
+      const calendars = await listCalendars(oauth2Client);
+      // Send the calendar data and events data to the CalendarSelect URL
+      res.cookie('userEmail', data.email).redirect(`http://localhost:3000/CalendarSelect?calendars=${JSON.stringify(calendars)}`);
     } else {
       // Handle other cases or errors
       res.status(500).send("Unable to save user");

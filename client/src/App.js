@@ -1,17 +1,39 @@
-import { Link } from "react-router-dom";
+import './index.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Calendar from './pages/Calendar/Calendar';
+import Evite from './pages/Evite/Evite';
+import Group from './pages/Group/Group';
+import JoinGroup from './pages/join_group/JoinGroup';
+import Login from './pages/LogIn';
+import CalendarSelect from './pages/CalendarSelect/CalendarSelect';
+import Event from './pages/Event/Event';
+import Test from './pages/Test';
+import CreateGroup from './pages/join_group/CreateGroup';
+import { SnackbarProvider } from 'notistack';
+import React, { useState } from 'react';
 
 function App() {
+  const [userEmail, setUserEmail] = useState("user@example.com");
+  const handleEmailChange = (newEmail) => {
+    setUserEmail(newEmail);
+  };
     return (
-      <div className="App">
-        <h1>Group Planning</h1>
-        <button><Link to="/calendar">Calendar</Link></button>
-        <button><Link to="/evite">Evite</Link></button>
-        <button><Link to="/group">Group</Link></button>
-        <button><Link to="/joingroup">Join Group</Link></button>
-        <button><Link to="/login">Login</Link></button>
-        <button><Link to="/CalendarSelect">Calendar Select</Link></button>
-        <button><Link to="/test">Test</Link></button>
-      </div>
+    <SnackbarProvider>
+    <Router>
+      <Routes>
+        <Route path="" element={<Test userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/calendar" element={<Calendar userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/evite" element={<Evite userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/group" element={<Group userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/joingroup" element={<JoinGroup userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/creategroup" element={<CreateGroup userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/login" element={<Login userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/calendarselect" element={<CalendarSelect userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/events" element={<Event userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+        <Route path="/test" element={<Test userEmail={userEmail} handleEmailChange={handleEmailChange} />} />
+      </Routes>
+    </Router>
+    </SnackbarProvider>
     );
   }
   

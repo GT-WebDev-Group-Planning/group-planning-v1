@@ -16,7 +16,7 @@ function Group({ userEmail, handleEmailChange }) {
     if (emailParam) {
       try {
         const parsedEmail = JSON.parse(emailParam);
-        setUserEmail(parsedEmail);
+        handleEmailChange(parsedEmail);
       } catch (error) {
         console.error('Error parsing email data:', error);
       }

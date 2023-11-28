@@ -2,6 +2,7 @@ const createUser = require("./db/actions/createUser");
 const createGroup = require("./db/actions/createGroup");
 const updateEvents = require("./db/actions/updateEvents");
 const getGroups = require("./db/actions/getGroups");
+const getEvents = require("./db/actions/getEvents");
 require('dotenv').config();
 
 const jwt = require('jsonwebtoken');
@@ -98,7 +99,7 @@ app.get('/events', async (req, res) => {
     const eventsParam = encodeURIComponent(eventsJSON);
     const updated = await updateEvents(userEmail, events);
     if (updated) {
-      res.redirect(`http://localhost:3000/group?email=${userEmail}`);
+      res.redirect(`http://localhost:3000/group?email=${JSON.stringify(userEmail)}`);
     }
     else {
       res.redirect(`http://localhost:3000`);
@@ -132,24 +133,7 @@ async function listCalendars(auth) {
 }
 
 app.get('/getEvents', async (req, res) => {
-  console.log("hi");
-  console.log(req.userEmail);
-  try {
-    const user = await User.findOne({ email: req.userEmail });
-
-    if (!user) {
-      console.log("User not found in the database.");
-      return res.status(404).send("User not found in the database.");
-    }
-
-    const events = user.events || [];
-
-    // Respond with the events data
-    res.status(200).json({ events });
-  } catch (error) {
-    console.error('Error fetching events from the database:', error);
-    res.status(500).send('Error fetching events from the database');
-  }
+  return getEvents(req, res);
 });
 
 app.get('/', (req, res) => {

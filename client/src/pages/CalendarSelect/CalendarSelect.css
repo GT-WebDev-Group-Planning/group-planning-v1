@@ -20,6 +20,8 @@ body {
     border-color: gray;
     border-radius: 3%;
     border-width: 0.1rem;
+    background-color: #6798c0;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
 }
 
 .CalendarSelectHeader {
@@ -38,10 +40,14 @@ body {
     border-width: 0.1rem;
     height: 35vh;
     overflow: scroll;
+    background-color: #FDD85D;
 }
 
 .CalendarListItem {
-    font-size: 1.125rem;
+    margin:1rem;
+    font-size: 2rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 /* Copied from Loom */
@@ -109,4 +115,9 @@ body {
     margin-left: 2vw;
     margin-right: 2vw;
     margin-top: 3.25vh;
+}
+
+#link {
+    text-decoration: underline;
+    color: #003566;
 }

@@ -5,14 +5,9 @@ const getGroups = require("./db/actions/getGroups");
 const getEvents = require("./db/actions/getEvents");
 require('dotenv').config();
 
-const jwt = require('jsonwebtoken');
-
 const axios = require("axios")
 
 const cookieParser = require('cookie-parser');
-
-const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
 
 const fs = require('fs').promises;
 const path = require('path');
@@ -20,21 +15,9 @@ const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
 
-const store = new MongoDBStore({
-  uri: process.env.MONGO_URI,
-  collection: 'sessions',
-});
 const express = require('express');
 const cors = require('cors');
 const app = express();
-
-app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true,
-  store: store,
-  cookie: { secure: false, maxAge: 1000 * 60 * 60 }, // 1 hour
-}));
 
 require('dotenv').config();
 
@@ -75,7 +58,7 @@ async function listEvents(auth, id, userEmail) {
   const res = await calendar.events.list({
     calendarId: id,
     timeMin: new Date().toISOString(),
-    maxResults: 10,
+    maxResults: 20,
     singleEvents: true,
     orderBy: 'startTime',
   });
@@ -95,8 +78,6 @@ app.get('/events', async (req, res) => {
   try {
     const userEmail = req.cookies.userEmail;
     const events = await listEvents(oauth2Client, req.query.calendar, userEmail);
-    const eventsJSON = JSON.stringify(events);
-    const eventsParam = encodeURIComponent(eventsJSON);
     const updated = await updateEvents(userEmail, events);
     if (updated) {
       res.redirect(`http://localhost:3000/group?email=${JSON.stringify(userEmail)}`);
@@ -187,12 +168,6 @@ app.get('/redirect', async (req, res) => {
     if (!exists || exists) {
       // Fetch the list of calendars
       const calendars = await listCalendars(oauth2Client);
-      const jwt = require('jsonwebtoken');
-
-      const generateToken = (userEmail) => {
-        const token = jwt.sign({ email: userEmail }, 'your-secret-key', { expiresIn: '1h' });
-        return token;
-      };
       // Send the calendar data and events data to the CalendarSelect URL
       res.cookie('userEmail', data.email).redirect(`http://localhost:3000/CalendarSelect?calendars=${JSON.stringify(calendars)}`);
     } else {

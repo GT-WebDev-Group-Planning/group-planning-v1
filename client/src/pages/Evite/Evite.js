@@ -3,7 +3,6 @@ import invitation from './invitation_picture.png';
 import friends from './friends.png'
 import { Link } from "react-router-dom";
 import './evite.css'
-import { useState } from 'react';
 function Evite() {
     const [inviteSent, setInviteSent] = useState(false);
     return (

@@ -1,4 +1,8 @@
 const createUser = require("./db/actions/createUser");
+const createInvitation = require('./db/actions/createInvitation');
+const createEvent = require('./db/actions/createEvent');
+const getInvitation = require('./db/actions/getInvitation');
+const getUser = require('./db/actions/getUser');
 const createGroup = require("./db/actions/createGroup");
 const updateEvents = require("./db/actions/updateEvents");
 const getGroups = require("./db/actions/getGroups");
@@ -44,6 +48,8 @@ const scopes = [
 
 //connectDB
 const connectDB = require('./db/connect');
+const { oauth2 } = require("googleapis/build/src/apis/oauth2");
+const { Console } = require("console");
 
 /**
  * Lists the next 10 events on the user's primary calendar.
@@ -180,6 +186,8 @@ app.get('/redirect', async (req, res) => {
   }
 });
 
+
+
 app.get('/events', (req, res) => {
   listEvents(oauth2Client)
   res.send('<h1>Events</h1>');
@@ -197,5 +205,119 @@ const start = async () => {
     console.log(error);
   }
 };
+
+// creates calendar for user(s)
+app.post('/createcalendar', (req, res) => {
+  /*
+    request body format: 
+  */
+});
+
+// creates and sends an invitation to user(s)
+// req body must include invitation data as an object in the form of 
+/*
+invitation = {
+  title,
+  description,
+  users_sent_to
+}
+*/
+// and event data as an object in the form of
+/*
+event = {
+  start, 
+  end, 
+  timeZone, 
+  summary, 
+  description
+}
+*/
+app.post('/sendinvitation', async (req, res) => {
+  // retrieve invite and event data
+  const { eventData, invitationData } = req.body;
+  invitationData.eventData = eventData;
+  const invitation = await createInvitation(invitationData, res);
+
+  // add invitation to all users the invite was sent to
+  for (email of invitationData.users_sent_to) {
+    const person = await getUser(email);
+    person.invitations.push(invitation._id);
+    await person.save();
+  }
+
+  res.status(200).send('OK');
+});
+
+// accept invitation and add event of invitation
+app.post('/acceptinvitation/:invitationId', async (req, res) => {
+  const invitationId = req.params.invitationId;
+  // get invitation from database
+  const invitation = await getInvitation(invitationId);
+
+  // get user info (email)
+  const token = await oauth2Client.getAccessToken();
+
+  const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token.token}`);
+  const user = data.email;
+
+  // check if user email is part of users invited (sent to) or accepted just in case
+  if (invitation.users_accepted.includes(user)) return res.status(200).send("User already accepted invitation");
+  if (!invitation.users_sent_to.includes(user)) return res.status(400).send("User was not invited"); 
+
+  // update accepted users on invitation
+  invitation.users_accepted.push(user);
+  await invitation.save();
+  // add the event to the user calendar
+  const invitationEvent = invitation.event.toObject();
+  const event = {
+    "kind": "calender#event",
+    "summary": invitationEvent.summary,
+    "description": invitationEvent.description,
+    "start": {
+      'dateTime': invitationEvent.start,
+      'timeZone': invitationEvent.timeZone,
+    },
+    "end": {
+      'dateTime': invitationEvent.end,
+      'timeZone': invitationEvent.timeZone,
+    }
+  };
+  await addEvent(event);
+  res.send("Hello");
+});
+
+async function addEvent(eventData) {
+  await calendar.events.insert({
+    calendarId: 'primary',
+    resource: eventData,
+    auth: oauth2Client
+  });
+}
+
+// returns all invitations of a user
+// returns a json of the form
+/*
+{
+  invitations: [invitation1, invitation2, ...]
+}
+*/
+// each invitation will have all of its data as defined by the Invitation model
+app.get('/getinvitations', async (req, res) => {
+  // get user info (email)
+  const token = await oauth2Client.getAccessToken();
+
+  const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token.token}`);
+  const user = await getUser(data.email);
+
+  const invitations = [];
+  for (invitationId of user.invitations) {
+    const invitation = await getInvitation(invitationId);
+    // remove unneccessary information
+    const { _id, schema_version, users_sent_to, users_accepted, __v, ...invitationObj } = invitation.toObject();
+    invitations.push(invitationObj);
+  }
+
+  res.json({ "invitations": invitations });
+});
 
 start();

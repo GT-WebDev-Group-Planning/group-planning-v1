@@ -4,6 +4,7 @@ const createEvent = require('./db/actions/createEvent');
 const getInvitation = require('./db/actions/getInvitation');
 const getUser = require('./db/actions/getUser');
 const createGroup = require("./db/actions/createGroup");
+const joinGroup = require("./db/actions/joinGroup");
 const updateEvents = require("./db/actions/updateEvents");
 const getGroups = require("./db/actions/getGroups");
 const getEvents = require("./db/actions/getEvents");
@@ -140,13 +141,23 @@ app.get('/google', (req, res) => {
   res.redirect(url);
 });
 
-app.post('/group', async (req, res) => {
+app.post('/creategroup', async (req, res) => {
   const groupData = req.body;
   const created = await createGroup(groupData, res);
   if (created) {
     res.status(200).send("Group created successfully");
   } else {
     res.status(500).send("Unable to create group");
+  }
+});
+
+app.post('/joingroup', async (req, res) => {
+  const groupData = req.body;
+  const joined = await joinGroup(groupData, res);
+  if (joined) {
+    res.status(200).send("Group joined successfully");
+  } else {
+    res.status(500).send("Unable to join group");
   }
 });
 

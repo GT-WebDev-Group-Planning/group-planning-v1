@@ -36,9 +36,10 @@ const Calendar = () => {
         groupContent = (
           <div className={`members-section ${selectedOption ? 'open' : ''}`}>
             <div className='members-container'>
-            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=MONTH&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%230B8043"style={{ width: '400px', height: '300px', border: '0px'}}></iframe>
+            <iframe class='smallCal' src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=MONTH&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%230B8043"style={{ width: '400px', height: '300px', border: '0px'}}></iframe>
               <h2><u>Today:</u></h2>
               <p>All Clear!</p>
+              <button> Create Event </button>
             </div>
           </div>
         );
@@ -47,7 +48,7 @@ const Calendar = () => {
         groupContent = (
           <div className={`members-section ${selectedOption ? 'open' : ''}`}>
             <div className='members-container'>
-            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=MONTH&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%23D50000" style={{ width: '400px', height: '300px', border: '0px'}}></iframe>
+            <iframe class='smallCal' src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=MONTH&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%23D50000" style={{ width: '400px', height: '300px', border: '0px'}}></iframe>
             <h2><u>Today:</u></h2>
               <p>All Clear!</p>
             <h2><u>24 Dec:</u></h2>
@@ -67,6 +68,7 @@ const Calendar = () => {
                   </h3>
                 </div>
               </div>
+              <button> Create Event </button>
             </div>
           </div>
         );
@@ -75,10 +77,10 @@ const Calendar = () => {
         groupContent = (
           <div className={`members-section ${selectedOption ? 'open' : ''}`}>
             <div className='members-container'>
-            <iframe  src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=MONTH&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%238E24AA" style={{ width: '400px', height: '300px', border: '0px'}}></iframe>
-            <h2><u>Today:</u></h2>
-              <p>All Clear!</p>
-            <h2><u>3 Dec:</u></h2>
+              <iframe class='smallCal' src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=MONTH&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%238E24AA" style={{ width: '400px', height: '300px', border: '0px'}}></iframe>
+              <h2><u>Today:</u></h2>
+                <p>All Clear!</p>
+              <h2><u>3 Dec:</u></h2>
               <div class='event'>
                 <div class="circle-container">
                   <div class="circle5"></div>
@@ -94,6 +96,7 @@ const Calendar = () => {
                   </h3>
                 </div>
               </div>
+              <button> Create Event </button>
             </div>
           </div>
         );
@@ -171,10 +174,8 @@ const Calendar = () => {
           <button id="next-month" onClick={nextMonth}>&gt;</button>
         </div>
         */}
-       
-        <button> Create Event </button>
       </div>
-      <iframe class = "gcal" src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=WEEK&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%230B8043" style={{ width: '1400px', height: '800px', border: '0px'}}></iframe>
+      <iframe class ="gcal" src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=WEEK&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%230B8043"></iframe>
     </div>
   );
 };

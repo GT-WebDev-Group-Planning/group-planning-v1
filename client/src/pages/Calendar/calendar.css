@@ -16,12 +16,9 @@
 /* buttonStyle */
 button {
   font-size: 24px;
-  margin-top: 250px;
   width: 400px;
   cursor: pointer;
   background-color: #fdd85d;
-  position: fixed;
-  bottom: 20px;
   border-radius: 10px;
 
 
@@ -64,12 +61,29 @@ select:hover {
 
 .gcal {
   border: 0;
-  width: 800;
-  height: 600;
+  width: 1400px;
+  height: 800px;
+}
+
+.smallCal {
+  width: 400px;
+  height: 300px;
 }
 
 .LeftSide {
   width: 400px;
+}
+
+@media (max-width: 2000px) {
+  .gcal {
+    width: 1000px;
+    height: 600px;
+  }
+
+  .smallCal {
+    width: 400px;
+    height: 200px;
+  }
 }
 
 

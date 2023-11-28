@@ -170,3 +170,10 @@ select:hover {
   border-radius: 50%;
   background-color: #6798c0;
 }
+
+.circle5 {
+  width: 40px;
+  height: 40px; 
+  border-radius: 50%;
+  background-color: #003566;
+}

@@ -53,7 +53,7 @@ const Calendar = () => {
             <h2><u>24 Dec:</u></h2>
               <div class='event'>
                 <div class="circle-container">
-                  <div class="circle"></div>
+                  <div class="circle5"></div>
                   <div class="circle"></div>
                   <div class="circle"></div>
                   <div class="circle4"></div>
@@ -81,7 +81,7 @@ const Calendar = () => {
             <h2><u>3 Dec:</u></h2>
               <div class='event'>
                 <div class="circle-container">
-                  <div class="circle"></div>
+                  <div class="circle5"></div>
                   <div class="circle"></div>
                   <div class="circle4"></div>
                 </div>

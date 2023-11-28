@@ -132,27 +132,10 @@ async function listCalendars(auth) {
 }
 
 app.get('/getEvents', async (req, res) => {
+  console.log("hi");
+  console.log(req.userEmail);
   try {
-    // Get the token from the request headers or query parameters
-    const token = req.headers.authorization || req.query.token;
-
-    if (!token) {
-      console.log("Authorization token not found.");
-      return res.status(401).send("Authorization token not found.");
-    }
-
-    // Verify the token and extract the payload
-    const decoded = jwt.verify(token, 'your-secret-key');
-
-    if (!decoded || !decoded.email) {
-      console.log("Invalid or missing email in the token.");
-      return res.status(401).send("Invalid or missing email in the token.");
-    }
-
-    const userEmail = decoded.email;
-
-    // Fetch events from the database based on user email
-    const user = await User.findOne({ email: userEmail });
+    const user = await User.findOne({ email: req.userEmail });
 
     if (!user) {
       console.log("User not found in the database.");

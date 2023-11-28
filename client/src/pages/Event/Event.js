@@ -4,11 +4,16 @@ import EventComponent from '../../components/EventComponent/EventComponent'
 import axios from 'axios';
 
 const Event = ({ userEmail, handleEmailChange }) => {
+  console.log(userEmail);
   const [events, setEvents] = useState([]);
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/getEvents');
+        const response = await axios.get('http://localhost:5000/getEvents', {
+          params: {
+            userEmail: userEmail,
+          },
+        });
         setEvents(response.data); // Assuming the API response is an array of events
       } catch (error) {
         console.error('Error fetching events:', error);

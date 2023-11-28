@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './calendar.css';
 
 
@@ -27,13 +27,98 @@ const Calendar = () => {
   function SelectComponent() {
     const [selectedOption, setSelectedOption] = useState('');
 
+    const [shouldAnimate, setShouldAnimate] = useState(false);
 
-    const [showMembers, setShowMembers] = useState(false);
+    let groupContent;
+
+    switch (selectedOption) {
+      case 'Group 1':
+        groupContent = (
+          <div className={`members-section ${selectedOption ? 'open' : ''}`}>
+            <div className='members-container'>
+            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=MONTH&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%230B8043"style={{ width: '400px', height: '300px', border: '0px'}}></iframe>
+              <h2><u>Today:</u></h2>
+              <p>All Clear!</p>
+            </div>
+          </div>
+        );
+        break;
+      case 'Group 2':
+        groupContent = (
+          <div className={`members-section ${selectedOption ? 'open' : ''}`}>
+            <div className='members-container'>
+            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=MONTH&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%23D50000" style={{ width: '400px', height: '300px', border: '0px'}}></iframe>
+            <h2><u>Today:</u></h2>
+              <p>All Clear!</p>
+            <h2><u>24 Dec:</u></h2>
+              <div class='event'>
+                <div class="circle-container">
+                  <div class="circle"></div>
+                  <div class="circle"></div>
+                  <div class="circle"></div>
+                  <div class="circle4"></div>
+                </div>
+                <div>
+                  <h3>
+                    Christmas Eve Party
+                  </h3>
+                  <h3>
+                    6:00 PM
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+        break;
+      case 'Group 3':
+        groupContent = (
+          <div className={`members-section ${selectedOption ? 'open' : ''}`}>
+            <div className='members-container'>
+            <iframe  src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=MONTH&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%238E24AA" style={{ width: '400px', height: '300px', border: '0px'}}></iframe>
+            <h2><u>Today:</u></h2>
+              <p>All Clear!</p>
+            <h2><u>3 Dec:</u></h2>
+              <div class='event'>
+                <div class="circle-container">
+                  <div class="circle"></div>
+                  <div class="circle"></div>
+                  <div class="circle4"></div>
+                </div>
+                <div>
+                  <h3>
+                    Basketball Game
+                  </h3>
+                  <h3>
+                    7:30 PM
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+        break;
+      default:
+        groupContent = null;
+    }
  
     const handleSelectChange = (e) => {
       setSelectedOption(e.target.value);
-      setShowMembers(true);
+
+      setShouldAnimate(true);
     };
+
+    const animationClass = shouldAnimate ? 'close-animation' : '';
+
+    useEffect(() => {
+      const container = document.querySelector('.members-section');
+      if (container) {
+        container.classList.remove('open');
+        setTimeout(() => {
+          container.classList.add('open');
+        }, 400);
+      }
+    }, [selectedOption]);
  
     return (
       <div>
@@ -49,19 +134,8 @@ const Calendar = () => {
 
         {/* Render when selectedOption has a value */}
         {selectedOption && (
-        <div className="members-section">
-          <p>{selectedOption} Events Listed Here</p>
-          <div className="members-container">
-            <h2>Members:</h2>
-            <dl style={memberList}>
-              <dt className='member0'>Get member based on group</dt>
-              <dt className='member1'>Get member based on group</dt>
-              <dt className='member0'>Get member based on group</dt>
-              <dt className='member1'>Get member based on group</dt>
-              <dt className='member0'>Get member based on group</dt>
-              <dt className='member1'>Get member based on group</dt>
-            </dl>
-          </div>
+        <div className={animationClass}>
+          {groupContent}
         </div>
       )}
     </div>
@@ -100,7 +174,7 @@ const Calendar = () => {
        
         <button> Create Event </button>
       </div>
-      <iframe class = "gcal" src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&mode=WEEK&showPrint=0&showTabs=1&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%230B8043" style={{ width: '1400px', height: '800px', border: '0px'}}></iframe>
+      <iframe class = "gcal" src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=WEEK&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%230B8043" style={{ width: '1400px', height: '800px', border: '0px'}}></iframe>
     </div>
   );
 };

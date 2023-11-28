@@ -19,7 +19,7 @@ button {
   margin-top: 250px;
   width: 400px;
   cursor: pointer;
-  background-color: #fdd85d; /* Add your desired background color */
+  background-color: #fdd85d;
   position: fixed;
   bottom: 20px;
   border-radius: 10px;
@@ -30,12 +30,12 @@ button {
 
 
 button:hover {
-  background-color: #ffe694; /* Darker background color */
+  background-color: #ffe694;
 }
 
 
 button:active {
-  transform: translate(1px, 2px); /* Move the button down slightly when clicked */
+  transform: translate(1px, 2px);
 }
 
 
@@ -45,13 +45,12 @@ dt {
 
 
 select {
-  /* Set the desired width */
   width: 100%;
-  padding: 10px; /* Add padding for better appearance */
-  font-size: 16px; /* Adjust font size */
+  padding: 10px;
+  font-size: 16px;
   font-family:'Montserrat';font-size: 22px;;
-  border: 1px solid #ccc; /* Add a border */
-  background-color: #fdd85d; /* Set background color */
+  border: 1px solid #ccc;
+  background-color: #fdd85d;
   border-radius: 10px;
 
 
@@ -60,24 +59,8 @@ select {
 
 
 select:hover {
-  background-color: #ffe694;; /* Darker background color */
+  background-color: #ffe694;;
 }
-
-/* monthDisplay */
-#month-display{
-  font-size: 24px;
-  font-weight: bold;
-  margin: 10px;
-}
-
-/* monthContainer */
-.month-container {
-  display: flex;
-  justify-content: flex-end;
-  vertical-align: middle;
-  background-color: lightblue;
-}
-
 
 .gcal {
   border: 0;
@@ -85,7 +68,6 @@ select:hover {
   height: 600;
 }
 
-/* leftSide */
 .LeftSide {
   width: 400px;
 }
@@ -111,7 +93,7 @@ select:hover {
   width: 30px;
   height: 30px;
   background-color: #fdd85d;
-  border-radius: 50%; /* Makes it a circle */
+  border-radius: 50%;
 }
 
 
@@ -119,7 +101,7 @@ select:hover {
   width: 30px;
   height: 30px;
   background-color: #99d6ea;
-  border-radius: 50%; /* Makes it a circle */
+  border-radius: 50%;
 }
 
 
@@ -136,21 +118,25 @@ select:hover {
 }
 
 
-.members-container {
-  max-height: 0;
+.members-section {
+  display: grid;
+  grid-template-rows: 0fr;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: all 0.4s ease;
 }
 
-.members-section p {
-  cursor: pointer;
+.members-section.open {
+  grid-template-rows: 1fr;
 }
 
-.members-section:hover .members-container {
-  max-height: 200px; /* Set the height to accommodate your content */
+.members-section.close-animation {
+  grid-template-rows: 0fr;
 }
 
-/* member0 */
+.members-container {
+  min-height: 0;
+}
+
 .member0 {
   background-color: lightblue;
 }
@@ -160,3 +146,27 @@ select:hover {
   background-color: lightgray;
 }
 
+.event {
+  display: flex;
+}
+
+.circle-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 5px;
+  width: 90px;
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #99d6ea;
+}
+
+.circle4 {
+  width: 40px;
+  height: 40px; 
+  border-radius: 50%;
+  background-color: #6798c0;
+}

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Navbar from '../../components/Navbar';
 import './calendar.css';
 
-
-const Calendar = () => {
+const Calendar = ({ userEmail, setUserEmail }) => {
   const months = [
     'January', 'February', 'March', 'April',
     'May', 'June', 'July', 'August',
@@ -155,6 +156,7 @@ const Calendar = () => {
   return (
     <div className="Calendar" >
       <div className="NavBar">
+        <Navbar />
       </div>
       <div className='LeftSide'>
         <div className="circles">
@@ -173,7 +175,6 @@ const Calendar = () => {
           <button id="prev-month" onClick={prevMonth}>&lt;</button>
           <button id="next-month" onClick={nextMonth}>&gt;</button>
         </div>
-        */}
       </div>
       <iframe class ="gcal" src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23fffdf7&ctz=America%2FNew_York&showTitle=0&mode=WEEK&showPrint=0&src=a2llcmFubWFybGFuZEBnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%230B8043"></iframe>
     </div>

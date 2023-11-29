@@ -8,6 +8,7 @@ const joinGroup = require("./db/actions/joinGroup");
 const updateEvents = require("./db/actions/updateEvents");
 const getGroups = require("./db/actions/getGroups");
 const getEvents = require("./db/actions/getEvents");
+const getGroupEvents = require("./db/actions/getGroupEvents");
 require('dotenv').config();
 
 const axios = require("axios")
@@ -122,6 +123,10 @@ async function listCalendars(auth) {
 
 app.get('/getEvents', async (req, res) => {
   return getEvents(req, res);
+});
+
+app.get('/getGroupEvents', async (req, res) => {
+  return getGroupEvents(req, res);
 });
 
 app.get('/', (req, res) => {

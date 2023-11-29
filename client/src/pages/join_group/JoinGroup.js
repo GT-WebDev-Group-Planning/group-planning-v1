@@ -21,7 +21,7 @@ const JoinGroup = ({ userEmail, handleEmailChange }) => {
         navigate('/group');
       })
       .catch((error) => {
-        enqueueSnackbar('Code does not exist', { variant: 'error' });
+        enqueueSnackbar('Code does not exist or already in group', { variant: 'error' });
         console.log(error);
       });
   };

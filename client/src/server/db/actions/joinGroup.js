@@ -11,10 +11,17 @@ async function joinGroup(groupData, res) {
     const existingGroup = await Group.findOne({ code : code });
 
     if (existingGroup) {
-      // If the group exists, add the userEmail to the members array
-      existingGroup.members.push(userEmail);
-      await existingGroup.save();
-      return true;
+      const memberExists = existingGroup.members.some(member => member === userEmail);
+
+      // If the userEmail doesn't exist, add it to the members array
+      if (!memberExists) {
+        existingGroup.members.push(userEmail);
+        await existingGroup.save();
+        return true;
+      }
+
+      // If the userEmail already exists, return false
+      return false;
     }
     return false;
   } catch (error) {

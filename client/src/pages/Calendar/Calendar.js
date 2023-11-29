@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import './calendar.css';
@@ -169,7 +169,6 @@ const Calendar = ({ userEmail, setUserEmail }) => {
         </div>
         {/*Choose Group Section*/}
         <SelectComponent></SelectComponent>
-        {/* Month Section
         <div className="month-container">
           <div id="month-display">{months[currentMonthIndex]}</div>
           <button id="prev-month" onClick={prevMonth}>&lt;</button>

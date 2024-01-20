@@ -7,7 +7,7 @@ function CalendarListItem({ calendarId, name }) {
     return (
       <div className="CalendarListItem">
         {name}
-        <a href={calendarLink}>    Choose</a>
+        <a id="link" href={calendarLink}>Choose</a>
       </div>
     );
   }  

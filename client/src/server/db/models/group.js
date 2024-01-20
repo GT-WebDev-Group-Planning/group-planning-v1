@@ -9,8 +9,7 @@ const groupSchema = new Schema({
     },
     name: String,
     description: String,
-    members: [{ userId: Number }],
-    events: [{ eventId: Number }],
+    members: [String]
 });
 
 module.exports = mongoose.model('Group', groupSchema);

@@ -14,7 +14,7 @@ const Event = ({ userEmail, handleEmailChange }) => {
             userEmail: userEmail,
           },
         });
-        setEvents(response.data); // Assuming the API response is an array of events
+        setEvents(response.data.events); // Assuming the API response is an array of events
       } catch (error) {
         console.error('Error fetching events:', error);
       }

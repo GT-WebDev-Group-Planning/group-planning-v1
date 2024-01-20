@@ -5,10 +5,10 @@ require('dotenv').config();
 async function createGroup(groupData, res) {
   await connectDB(process.env.MONGO_URI);
   try {
-    const { code, name, description } = groupData;
+    const { code, name, description, userEmail } = groupData;
     const members = [];
-    const events = [];
-    const group = new Group({ code, name, description, members, events });
+    members.push(userEmail);
+    const group = new Group({ code, name, description, members });
     await group.save();
     return true;
   } catch (error) {

@@ -1,17 +1,19 @@
 const createUser = require("./db/actions/createUser");
+const createInvitation = require('./db/actions/createInvitation');
+const createEvent = require('./db/actions/createEvent');
+const getInvitation = require('./db/actions/getInvitation');
+const getUser = require('./db/actions/getUser');
 const createGroup = require("./db/actions/createGroup");
+const joinGroup = require("./db/actions/joinGroup");
 const updateEvents = require("./db/actions/updateEvents");
 const getGroups = require("./db/actions/getGroups");
+const getEvents = require("./db/actions/getEvents");
+const getGroupEvents = require("./db/actions/getGroupEvents");
 require('dotenv').config();
-
-const jwt = require('jsonwebtoken');
 
 const axios = require("axios")
 
 const cookieParser = require('cookie-parser');
-
-const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
 
 const fs = require('fs').promises;
 const path = require('path');
@@ -19,21 +21,9 @@ const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
 
-const store = new MongoDBStore({
-  uri: process.env.MONGO_URI,
-  collection: 'sessions',
-});
 const express = require('express');
 const cors = require('cors');
 const app = express();
-
-app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true,
-  store: store,
-  cookie: { secure: false, maxAge: 1000 * 60 * 60 }, // 1 hour
-}));
 
 require('dotenv').config();
 
@@ -60,6 +50,8 @@ const scopes = [
 
 //connectDB
 const connectDB = require('./db/connect');
+const { oauth2 } = require("googleapis/build/src/apis/oauth2");
+const { Console } = require("console");
 
 /**
  * Lists the next 10 events on the user's primary calendar.
@@ -74,7 +66,7 @@ async function listEvents(auth, id, userEmail) {
   const res = await calendar.events.list({
     calendarId: id,
     timeMin: new Date().toISOString(),
-    maxResults: 10,
+    maxResults: 20,
     singleEvents: true,
     orderBy: 'startTime',
   });
@@ -94,11 +86,9 @@ app.get('/events', async (req, res) => {
   try {
     const userEmail = req.cookies.userEmail;
     const events = await listEvents(oauth2Client, req.query.calendar, userEmail);
-    const eventsJSON = JSON.stringify(events);
-    const eventsParam = encodeURIComponent(eventsJSON);
     const updated = await updateEvents(userEmail, events);
     if (updated) {
-      res.redirect(`http://localhost:3000/group?email=${userEmail}`);
+      res.redirect(`http://localhost:3000/group?email=${JSON.stringify(userEmail)}`);
     }
     else {
       res.redirect(`http://localhost:3000`);
@@ -132,24 +122,11 @@ async function listCalendars(auth) {
 }
 
 app.get('/getEvents', async (req, res) => {
-  console.log("hi");
-  console.log(req.userEmail);
-  try {
-    const user = await User.findOne({ email: req.userEmail });
+  return getEvents(req, res);
+});
 
-    if (!user) {
-      console.log("User not found in the database.");
-      return res.status(404).send("User not found in the database.");
-    }
-
-    const events = user.events || [];
-
-    // Respond with the events data
-    res.status(200).json({ events });
-  } catch (error) {
-    console.error('Error fetching events from the database:', error);
-    res.status(500).send('Error fetching events from the database');
-  }
+app.get('/getGroupEvents', async (req, res) => {
+  return getGroupEvents(req, res);
 });
 
 app.get('/', (req, res) => {
@@ -169,13 +146,23 @@ app.get('/google', (req, res) => {
   res.redirect(url);
 });
 
-app.post('/group', async (req, res) => {
+app.post('/creategroup', async (req, res) => {
   const groupData = req.body;
   const created = await createGroup(groupData, res);
   if (created) {
     res.status(200).send("Group created successfully");
   } else {
     res.status(500).send("Unable to create group");
+  }
+});
+
+app.post('/joingroup', async (req, res) => {
+  const groupData = req.body;
+  const joined = await joinGroup(groupData, res);
+  if (joined) {
+    res.status(200).send("Group joined successfully");
+  } else {
+    res.status(500).send("Unable to join group");
   }
 });
 
@@ -203,12 +190,6 @@ app.get('/redirect', async (req, res) => {
     if (!exists || exists) {
       // Fetch the list of calendars
       const calendars = await listCalendars(oauth2Client);
-      const jwt = require('jsonwebtoken');
-
-      const generateToken = (userEmail) => {
-        const token = jwt.sign({ email: userEmail }, 'your-secret-key', { expiresIn: '1h' });
-        return token;
-      };
       // Send the calendar data and events data to the CalendarSelect URL
       res.cookie('userEmail', data.email).redirect(`http://localhost:3000/CalendarSelect?calendars=${JSON.stringify(calendars)}`);
     } else {
@@ -220,6 +201,8 @@ app.get('/redirect', async (req, res) => {
     res.status(500).send("Unable to save user");
   }
 });
+
+
 
 app.get('/events', (req, res) => {
   listEvents(oauth2Client)
@@ -238,5 +221,119 @@ const start = async () => {
     console.log(error);
   }
 };
+
+// creates calendar for user(s)
+app.post('/createcalendar', (req, res) => {
+  /*
+    request body format: 
+  */
+});
+
+// creates and sends an invitation to user(s)
+// req body must include invitation data as an object in the form of 
+/*
+invitation = {
+  title,
+  description,
+  users_sent_to
+}
+*/
+// and event data as an object in the form of
+/*
+event = {
+  start, 
+  end, 
+  timeZone, 
+  summary, 
+  description
+}
+*/
+app.post('/sendinvitation', async (req, res) => {
+  // retrieve invite and event data
+  const { eventData, invitationData } = req.body;
+  invitationData.eventData = eventData;
+  const invitation = await createInvitation(invitationData, res);
+
+  // add invitation to all users the invite was sent to
+  for (email of invitationData.users_sent_to) {
+    const person = await getUser(email);
+    person.invitations.push(invitation._id);
+    await person.save();
+  }
+
+  res.status(200).send('OK');
+});
+
+// accept invitation and add event of invitation
+app.post('/acceptinvitation/:invitationId', async (req, res) => {
+  const invitationId = req.params.invitationId;
+  // get invitation from database
+  const invitation = await getInvitation(invitationId);
+
+  // get user info (email)
+  const token = await oauth2Client.getAccessToken();
+
+  const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token.token}`);
+  const user = data.email;
+
+  // check if user email is part of users invited (sent to) or accepted just in case
+  if (invitation.users_accepted.includes(user)) return res.status(200).send("User already accepted invitation");
+  if (!invitation.users_sent_to.includes(user)) return res.status(400).send("User was not invited"); 
+
+  // update accepted users on invitation
+  invitation.users_accepted.push(user);
+  await invitation.save();
+  // add the event to the user calendar
+  const invitationEvent = invitation.event.toObject();
+  const event = {
+    "kind": "calender#event",
+    "summary": invitationEvent.summary,
+    "description": invitationEvent.description,
+    "start": {
+      'dateTime': invitationEvent.start,
+      'timeZone': invitationEvent.timeZone,
+    },
+    "end": {
+      'dateTime': invitationEvent.end,
+      'timeZone': invitationEvent.timeZone,
+    }
+  };
+  await addEvent(event);
+  res.send("Hello");
+});
+
+async function addEvent(eventData) {
+  await calendar.events.insert({
+    calendarId: 'primary',
+    resource: eventData,
+    auth: oauth2Client
+  });
+}
+
+// returns all invitations of a user
+// returns a json of the form
+/*
+{
+  invitations: [invitation1, invitation2, ...]
+}
+*/
+// each invitation will have all of its data as defined by the Invitation model
+app.get('/getinvitations', async (req, res) => {
+  // get user info (email)
+  const token = await oauth2Client.getAccessToken();
+
+  const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token.token}`);
+  const user = await getUser(data.email);
+
+  const invitations = [];
+  for (invitationId of user.invitations) {
+    const invitation = await getInvitation(invitationId);
+    // remove unneccessary information
+    const { _id, schema_version, users_sent_to, users_accepted, __v, ...invitationObj } = invitation.toObject();
+    invitations.push(invitationObj);
+  }
+
+  res.json({ "invitations": invitations });
+});
 
 start();

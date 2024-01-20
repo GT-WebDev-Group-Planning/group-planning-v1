@@ -16,10 +16,11 @@ const CreateGroup = ({ userEmail, handleEmailChange }) => {
         const data = {
             name,
             code,
-            description
+            description,
+            userEmail
         };
         setLoading(true);
-        axios.post('http://localhost:5000/group', data)
+        axios.post('http://localhost:5000/creategroup', data)
         .then (() => {
             enqueueSnackbar('Group Created Successfully', {variant: 'success'});
             navigate('/group');

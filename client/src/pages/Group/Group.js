@@ -6,8 +6,8 @@ import './group.css';
 import axios from 'axios';
 
 function Group({ userEmail, handleEmailChange }) {
-  const [groups, setGroups] = useState([]);
   const location = useLocation();
+  const [groups, setGroups] = useState([]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);

@@ -4,6 +4,7 @@ import EventComponent from '../../components/EventComponent/EventComponent'
 import axios from 'axios';
 
 const Event = ({ userEmail, handleEmailChange }) => {
+  console.log(userEmail);
   const [events, setEvents] = useState([]);
   useEffect(() => {
     const fetchEvents = async () => {
